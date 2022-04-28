@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    long id;
+    Long id;
    // @Size(min = 3, max = 25, message = "Tên phải từ 3 đến 25 ký tự")
     String name;
     String password;

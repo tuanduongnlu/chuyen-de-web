@@ -20,7 +20,7 @@ public class ChuyenDeWebApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User user = new User(1,"duong",passwordEncoder.encode("12345678"),"0349651548",
+        User user = new User(Long.parseLong("1"),"admin",passwordEncoder.encode("12345678"),"0349651548",
                 "letuanduong682000@gmail.com","unlock","ROLE_ADMIN");
         userRepository.save(user);
     }
