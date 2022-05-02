@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 public class location {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
     @OneToOne
             @JoinColumn(name="Distric_id")

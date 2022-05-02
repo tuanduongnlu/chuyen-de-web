@@ -1,17 +1,13 @@
 package com.example.chuyendeweb.service;
 
-import com.example.chuyendeweb.entities.CustomUserDetails;
 import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     @Autowired
     UserRepository userRepository;
 
@@ -20,7 +16,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void saveOrUpdate(User user){
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
 
     public void delete(long id){
@@ -35,24 +31,29 @@ public class UserService implements UserDetailsService {
 //        if(user==null) return false ;
 //        return true;
 //    }
-    public void lockorUnlock(long id){
+    public void lockorUnlock(Long id){
         User user = userRepository.findById(id).get();
-        if(user.getState()=="lock")
-        user.setState("unlock");
-        else user.setState("lock");
-        userRepository.save(user);
+        int state = user.getState();
+        if(state==0)
+            user.setState(1);
+        else user.setState(0);
+        saveOrUpdate(user);
     }
     public String fogotPassword(String phone) {
         User user = userRepository.findByPhone(phone);
         return user.getPassword();
     }
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByPhone(username);
-        if(user==null )
-throw  new UsernameNotFoundException("user not found in the database");
-        if (user.getState()=="lock")
-            throw  new UsernameNotFoundException("user  locked");
-        return new CustomUserDetails(user);
+
+    public boolean checkPhoneExist(String phone) {
+        return userRepository.existsByPhone(phone);
     }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.findByPhone(username);
+//        if(user==null )
+//throw  new UsernameNotFoundException("user not found in the database");
+//        if (user.getState()=="lock")
+//            throw  new UsernameNotFoundException("user  locked");
+//        return new CustomUserDetails(user);
+//    }
 }

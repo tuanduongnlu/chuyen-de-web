@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 public class RentPost {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id ;
     Date timePost;
     @OneToOne

@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -20,13 +16,11 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     Long id;
-   // @Size(min = 3, max = 25, message = "Tên phải từ 3 đến 25 ký tự")
     String name;
     String password;
-    //@Column(name = "phone", unique = true, nullable = false, length = 10)
-    //@Size( min = 10, max=10,message = "Số điện thoại phải 10 chữ số")
+    @Column(name = "phone", unique = true, nullable = false, length = 10)
     String phone;
     String email;
-    String state;
+    int state;
     String role ;
 }
