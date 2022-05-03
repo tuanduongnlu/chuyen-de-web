@@ -1,8 +1,10 @@
 package com.example.chuyendeweb.entities;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 @Data
@@ -13,13 +15,14 @@ public class RentPost {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id ;
-    Date timePost;
+    @CreatedDate
+    @Column(name="timePost", nullable = false)
+    java.util.Date timePost = new Date();
     @OneToOne
             @JoinColumn(name="RoomType_id")
             RoomType roomType;
     String title;
     String detail;
-    String linkImage;
     int price;
     double acreage ;
     String sex ;
@@ -29,5 +32,6 @@ public class RentPost {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     User user;
+
 
 }

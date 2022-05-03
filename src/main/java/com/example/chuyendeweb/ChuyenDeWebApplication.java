@@ -2,15 +2,21 @@ package com.example.chuyendeweb;
 
 import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.repository.UserRepository;
+import com.example.chuyendeweb.service.FilesStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.annotation.Resource;
+
 @SpringBootApplication
 public class ChuyenDeWebApplication implements CommandLineRunner {
-@Autowired
+    @Autowired
     UserRepository userRepository;
+    @Resource
+    FilesStorageService filesStorageService;
+
     public static void main(String[] args) {
         SpringApplication.run(ChuyenDeWebApplication.class, args);
     }
@@ -18,8 +24,9 @@ public class ChuyenDeWebApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User user = new User(Long.parseLong("1"),"admin","12345678","0349651548",
-                "letuanduong682000@gmail.com",1,"ROLE_ADMIN");
+        User user = new User(Long.parseLong("1"), "admin", "12345678", "0349651548",
+                "letuanduong682000@gmail.com", 1, "ROLE_ADMIN");
         userRepository.save(user);
+
     }
 }
