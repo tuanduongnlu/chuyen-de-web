@@ -47,13 +47,10 @@ public class UserService {
     public boolean checkPhoneExist(String phone) {
         return userRepository.existsByPhone(phone);
     }
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByPhone(username);
-//        if(user==null )
-//throw  new UsernameNotFoundException("user not found in the database");
-//        if (user.getState()=="lock")
-//            throw  new UsernameNotFoundException("user  locked");
-//        return new CustomUserDetails(user);
-//    }
+
+    public User checkLogin (String userName ,String password){
+        User user = userRepository.findByPhoneAndPassword(userName,password);
+        return user;
+    }
+
 }

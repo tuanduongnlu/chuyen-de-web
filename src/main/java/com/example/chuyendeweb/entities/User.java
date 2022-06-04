@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class User implements Serializable {
     @Column(name = "phone", unique = true, nullable = false, length = 10)
     String phone;
     String email;
+    Date create_date;
     int state;
     String role ;
 }

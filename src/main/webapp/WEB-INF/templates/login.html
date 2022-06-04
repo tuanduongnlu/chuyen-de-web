@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+</head>
+<body>
+<div class="wrapper">
+  <div class="title-text">
+    <div class="title login">Đăng nhập</div>
+    <div class="title signup">Đăng kí</div>
+  </div>
+  <div class="form-container">
+    <div class="slide-controls">
+      <input type="radio" name="slide" id="login" checked>
+      <input type="radio" name="slide" id="signup">
+      <label for="login" class="slide login">Đăng nhập</label>
+      <label for="signup" class="slide signup">Đăng kí</label>
+      <div class="slider-tab"></div>
+    </div>
+    <div class="form-inner">
+      <form action="/login" class="login" method="post">
+        <div class="field">
+          <input type="text" th:value="${phone}" name="phone" placeholder="Số điện thoại"  pattern="(\+84|0)\d{9,10}" required  maxlength="10" title="Số điện thoại gồm 10 số">
+        </div>
+        <div class="field">
+          <input type="password" name="password" placeholder="Mật khẩu" required>
+        </div>
+        <p class="message_login" th:text="${error}" style="color: red;text-align: center"></p>
+        <div class="pass-link"><a href="#">Quên mật khẩu ?</a></div>
+        <div class="field btn">
+          <div class="btn-layer"></div>
+          <input type="submit" value="Đăng nhập">
+        </div>
+        <div class="signup-link">Chưa có tài khoảng? <a href="">Đăng kí ngay</a></div>
+      </form>
+      <form action="#" th:action="@{/register}" class="signup"   method="post">
+        <div class="field">
+          <input type="text" name="name" placeholder="Name" required>
+        </div>
+        <div class="field">
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="field">
+          <input type="text" class="phonedk" th:value="*{phone}" name="phone" placeholder="Số điện thoại" pattern="(\+84|0)\d{9,10}" onchange="checkPhone()" required  maxlength="10" title="Số điện thoại gồm 10 số">
+
+        </div>
+        <p class="message_phone" style="text-align: center;color: red" ></p>
+        <div class="field">
+          <input type="password"  class="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="field">
+          <input type="password" class="cf_password" placeholder="Confirm password" onchange="checkPw()" required>
+          <p class="message_pw"></p>
+        </div>
+        <div class="field btn">
+          <div class="btn-layer"></div>
+          <input type="submit" value="Đăng kí">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function checkPhone() {
+    var phone =document.querySelector(".phonedk").value;
+    fetch('http://localhost:8080/api/users/exists/'+phone,{
+      method: 'GET'
+    })
+    .then(res=> res.text())
+    .then(text=>{
+      if(text=="true")
+        document.querySelector(".message_phone").innerHTML = "số điện thoại đã được sử dụng" ;
+      else
+        document.querySelector(".message_phone").innerHTML = "" ;
+    }) ;
+
+  }
+  function checkPw(){
+    const cfPassword =document.querySelector(".cf_password");
+    const password = document.querySelector(".password");
+    cfPassword.onchange
+    if(cfPassword.value!=password.value)
+      document.querySelector(".message_pw").innerHTML = "xác thực sai"
+    if(cfPassword.value==password.value)
+      document.querySelector(".message_pw").innerHTML = ""
+  }
+  const loginText = document.querySelector(".title-text .login");
+  const loginForm = document.querySelector("form.login");
+  const loginBtn = document.querySelector("label.login");
+  const signupBtn = document.querySelector("label.signup");
+  const signupLink = document.querySelector("form .signup-link a");
+  signupBtn.onclick = (()=>{
+    loginForm.style.marginLeft = "-50%";
+    loginText.style.marginLeft = "-50%";
+  });
+  loginBtn.onclick = (()=>{
+    loginForm.style.marginLeft = "0%";
+    loginText.style.marginLeft = "0%";
+  });
+  signupLink.onclick = (()=>{
+    signupBtn.click();
+    return false;
+  });
+</script>
+</body>
+</html>

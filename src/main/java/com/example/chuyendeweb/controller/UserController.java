@@ -18,24 +18,20 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/users", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public List<User> getAll() {
         return service.findAll();
     }
-    @RequestMapping(value = "/users/exists/{phone}", method = RequestMethod.GET
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+
+    @GetMapping(value = "/users/exists/{phone}", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public ResponseEntity<Boolean> checkPhoneExist(@PathVariable String phone){
         return ResponseEntity.ok().body(service.checkPhoneExist(phone));
     }
-    @RequestMapping(value = "/users", method = RequestMethod.POST
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+
+    @PostMapping(value = "/users",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public String create(@RequestBody User user) throws CustomException {
         if(service.checkPhoneExist(user.getPhone()))
             throw  new CustomException("so dien thoai da ton tai", HttpStatus.BAD_REQUEST);
@@ -43,10 +39,8 @@ public class UserController {
         return "tao thanh cong";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.PUT
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(value = "/users",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public String update(@RequestBody User user) throws CustomException{
         if(service.checkPhoneExist(user.getPhone()))
             throw  new CustomException("so dien thoai da ton tai", HttpStatus.BAD_REQUEST);
@@ -54,10 +48,8 @@ public class UserController {
         return "update thanh cong";
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+    @DeleteMapping(value = "/users/{id}",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public String delete(@PathVariable("id") long id){
         service.delete(id);
         return "xoa thanh cong" ;
@@ -71,19 +63,17 @@ public class UserController {
         return service.getUserById(id);
     }
 
-    @RequestMapping(value = "/users/states/{id}", method = RequestMethod.GET
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+
+    @GetMapping(value = "/users/states/{id}",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public String setState(@PathVariable("id") long id) {
     service.lockorUnlock(id);
     return "thanh cong" ;
     }
 
-    @RequestMapping(value = "/users/passwords/{phone}", method = RequestMethod.POST
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
+
+    @PostMapping(value = "/users/passwords/{phone}", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
     public void fogotPassword(@PathVariable String phone) {
 
     }

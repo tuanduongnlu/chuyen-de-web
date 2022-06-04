@@ -24,9 +24,6 @@ public class ChuyenDeWebApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User user = new User(Long.parseLong("1"), "admin", "12345678", "0349651548",
-                "letuanduong682000@gmail.com", 1, "ROLE_ADMIN");
-        userRepository.save(user);
 
     }
 }
