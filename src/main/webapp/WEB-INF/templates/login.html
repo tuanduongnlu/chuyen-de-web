@@ -21,7 +21,7 @@
       <div class="slider-tab"></div>
     </div>
     <div class="form-inner">
-      <form action="/login" class="login" method="post">
+      <form th:action="@{/login}" class="login" method="post">
         <div class="field">
           <input type="text" th:value="${phone}" name="phone" placeholder="Số điện thoại"  pattern="(\+84|0)\d{9,10}" required  maxlength="10" title="Số điện thoại gồm 10 số">
         </div>
@@ -36,7 +36,7 @@
         </div>
         <div class="signup-link">Chưa có tài khoảng? <a href="">Đăng kí ngay</a></div>
       </form>
-      <form action="#" th:action="@{/register}" class="signup"   method="post">
+      <form  th:action="@{/register}" class="signup"   method="post">
         <div class="field">
           <input type="text" name="name" placeholder="Name" required>
         </div>
@@ -52,7 +52,7 @@
           <input type="password"  class="password" name="password" placeholder="Password" required>
         </div>
         <div class="field">
-          <input type="password" class="cf_password" placeholder="Confirm password" onchange="checkPw()" required>
+          <input type="password" class="cf_password" placeholder="Confirm password" onblur="checkPw()" required>
           <p class="message_pw"></p>
         </div>
         <div class="field btn">

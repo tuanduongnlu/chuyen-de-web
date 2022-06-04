@@ -1,5 +1,6 @@
 package com.example.chuyendeweb.DTO.user;
 
+import com.example.chuyendeweb.entities.Role;
 import com.example.chuyendeweb.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,10 @@ public class UserDTO {
         user.setName(this.name);
         user.setEmail(this.email);
         user.setPassword(this.password);
-        user.setState(1);
+        user.setState(true);
         user.setPhone(this.phone);
         user.setCreate_date(new Date());
-        user.setRole("user");
+        user.getRoles().add(new Role(1l,"USER"));
         return user;
     }
 }

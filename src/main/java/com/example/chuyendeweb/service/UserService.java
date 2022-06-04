@@ -3,6 +3,7 @@ package com.example.chuyendeweb.service;
 import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +11,20 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BCryptPasswordEncoder BCryptPasswordEncoder;
 
     public List<User> findAll() {
        return userRepository.findAll();
     }
 
     public void saveOrUpdate(User user){
-        userRepository.saveAndFlush(user);
+        user.setPassword(BCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    public User findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
     }
 
     public void delete(long id){
@@ -26,17 +34,12 @@ public class UserService {
     public User getUserById(Long id){
         return userRepository.findById(id).get();
     }
-//    public boolean checkLogin (String phone ,String password) {
-//        User user = userRepository.findByPhoneAndPassword(phone, password);
-//        if(user==null) return false ;
-//        return true;
-//    }
+
     public void lockorUnlock(Long id){
         User user = userRepository.findById(id).get();
-        int state = user.getState();
-        if(state==0)
-            user.setState(1);
-        else user.setState(0);
+        if(user.isState())
+            user.setState(false);
+        else user.setState(true);
         saveOrUpdate(user);
     }
     public String fogotPassword(String phone) {
