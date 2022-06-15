@@ -14,11 +14,11 @@ import javax.persistence.*;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id ;
+    int id ;
     String link ;
     @ManyToOne(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @JoinColumn(name = "rentpost_id", nullable = false)
     @JsonBackReference
-    RentPost rentPost;
+    RentPost rentpost;
 }

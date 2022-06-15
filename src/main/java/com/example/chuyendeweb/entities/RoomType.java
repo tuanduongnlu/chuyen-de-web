@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +14,8 @@ import javax.persistence.Id;
 public class RoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    int id;
     String name;
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    Collection<RentPost> rentPosts;
 }

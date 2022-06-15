@@ -21,11 +21,12 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         User user = userRepository.findByPhone(phone);
-        if (user == null ) throw new UsernameNotFoundException(phone);
+        if (user == null ) throw new UsernameNotFoundException("Không có tài khoảng nào có số điện thoại này");
         Collection<SimpleGrantedAuthority> authrities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authrities.add(new SimpleGrantedAuthority(role.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(user.getPhone(),user.getPassword(),authrities);
+        return new UserDetailImpl(user);
     }
+
 }

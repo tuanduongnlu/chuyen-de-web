@@ -13,15 +13,10 @@ import javax.persistence.*;
 public class location {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    @OneToOne
-            @JoinColumn(name="Distric_id")
-          Distric distric;
-    @OneToOne
-            @JoinColumn(name="Ward_id")
-     Ward ward;
+    int id;
+    int distric;
+    int ward;
     String detail;
-    @OneToOne
-    @JoinColumn(name="rentPost_id")
+    @OneToOne( mappedBy = "location")
     RentPost rentPost;
 }

@@ -24,7 +24,7 @@ public class UserDTO {
         user.setState(true);
         user.setPhone(this.phone);
         user.setCreate_date(new Date());
-        user.getRoles().add(new Role(1l,"USER"));
+        user.getRoles().add(new Role(1l,"user"));
         return user;
     }
 }

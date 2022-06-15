@@ -4,6 +4,7 @@ import com.example.chuyendeweb.entities.RentPost;
 import com.example.chuyendeweb.repository.RentPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class RentPostService {
         return repository.findAll();
     }
     // xoa theo id
-    public void delete(long id){
+    public void delete(int id){
         repository.deleteById(id);
     }
     // luu hoac update
@@ -57,8 +58,36 @@ public class RentPostService {
     public RentPost searchByUserId(long id) {
         return  repository.findByUser_id(id);
     }
-    // tim kiem theo dia chi
-    public List<RentPost> searchByLocation (long distric_id ,long ward_id,String detail){
-        return repository.searchByLocation(distric_id,ward_id,detail);
-    }
+    //search
+    public List<RentPost> search ( int distric_id,  int ward_id,
+                          int roomtype,  int startPrice,
+                            int endPrice,  int startArea,
+                           int endArea){
+        return repository.search(distric_id,ward_id,roomtype,startPrice,endPrice,startArea,endArea);
+    };
+
+    public List<RentPost> searchNotRoomtype ( int distric_id, int ward_id,
+                                       int startPrice,
+                                      int endPrice, int startArea,
+                                       int endArea){
+        return repository.searchNotRoomtype(distric_id,ward_id,startPrice,endPrice,startArea,endArea);
+    };
+
+    public List<RentPost> searchNotLocation ( int roomtype,int startPrice,
+                                      int endPrice, int startArea,
+                                     int endArea) {
+        return repository.searchNotLocation(roomtype,startPrice,endPrice,startArea,endArea);
+    };
+
+    public List<RentPost> searchNotWard ( int distric_id,
+                                  int roomtype,  int startPrice,
+                                  int endPrice,  int startArea,
+                                  int endArea){
+        return repository.searchNotWard(distric_id,roomtype,startPrice,endPrice,startArea,endArea);
+    };
+    public List<RentPost> searchNotWardAndRoomType(int distric_id, int startPrice,
+                                                   int endPrice, int startArea,
+                                                   int endArea){
+        return repository.searchNotWardAndRoomType(distric_id,startPrice,endPrice,startArea,endArea);
+    };
 }

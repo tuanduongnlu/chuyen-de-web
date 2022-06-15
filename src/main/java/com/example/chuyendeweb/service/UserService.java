@@ -31,11 +31,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User getUserById(Long id){
+    public User getUserById(long id){
         return userRepository.findById(id).get();
     }
 
-    public void lockorUnlock(Long id){
+    public void lockorUnlock(long id){
         User user = userRepository.findById(id).get();
         if(user.isState())
             user.setState(false);

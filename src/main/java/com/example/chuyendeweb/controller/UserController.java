@@ -50,7 +50,7 @@ public class UserController {
 
     @DeleteMapping(value = "/users/{id}",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    public String delete(@PathVariable("id") long id){
+    public String delete(@PathVariable("id") int id){
         service.delete(id);
         return "xoa thanh cong" ;
     }
@@ -59,14 +59,14 @@ public class UserController {
             , produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
-    public User getUser(@PathVariable("id") long id){
+    public User getUser(@PathVariable("id") int id){
         return service.getUserById(id);
     }
 
 
     @GetMapping(value = "/users/states/{id}",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    public String setState(@PathVariable("id") long id) {
+    public String setState(@PathVariable("id") int id) {
     service.lockorUnlock(id);
     return "thanh cong" ;
     }
