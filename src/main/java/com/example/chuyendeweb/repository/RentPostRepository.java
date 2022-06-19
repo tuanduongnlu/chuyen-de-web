@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
+    RentPost findById(int id);
     List<RentPost> findAllByPriceBetween(int startPrice,int endPrice);
     List<RentPost> findAllByRoomType_idOrderByTimePostDesc (long RoomType_id);
     List<RentPost> findAllByOrderByPriceAsc();

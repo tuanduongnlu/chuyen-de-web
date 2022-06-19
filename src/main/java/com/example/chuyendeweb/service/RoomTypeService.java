@@ -14,4 +14,7 @@ public class RoomTypeService {
     public List<RoomType> roomTypes () {
         return repository.findAll();
     }
+    public RoomType getById(int id) {
+        return repository.findById(id);
+    }
 }

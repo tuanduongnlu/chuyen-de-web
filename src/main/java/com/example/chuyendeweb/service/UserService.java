@@ -32,11 +32,16 @@ public class UserService {
     }
 
     public User getUserById(long id){
-        return userRepository.findById(id).get();
+        return userRepository.findById(id);
     }
 
+    public User getByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+
     public void lockorUnlock(long id){
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id);
         if(user.isState())
             user.setState(false);
         else user.setState(true);

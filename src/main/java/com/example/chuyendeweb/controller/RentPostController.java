@@ -1,6 +1,7 @@
 package com.example.chuyendeweb.controller;
 
 
+import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
 import com.example.chuyendeweb.entities.RentPost;
 import com.example.chuyendeweb.service.RentPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,28 +43,14 @@ public class RentPostController {
         RentPostService.saveOrUpdate(rentPost);
     }
 
-    @RequestMapping(value = "/rentPosts/listPrices/{startPrice}_{endPrice}", method = {RequestMethod.GET, RequestMethod.POST}
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
-    public List<RentPost> listPrice(@PathVariable("startPrice") int startPrice, @PathVariable("endPrice") int endPrice) {
-        return RentPostService.searchByPrice(startPrice, endPrice);
-    }
-
-    @RequestMapping(value = "/rentPosts/listTypeRooms/{id}", method = {RequestMethod.GET, RequestMethod.POST}
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
-    public List<RentPost> listTypeRoom(@PathVariable("id") long id) {
-        return RentPostService.searchByTypeRoom(id);
-    }
-
     @GetMapping(value = "/rentPosts/listPricesDesc")
-    public List<RentPost> listPriceDesc() {
+    public List<RentPostReadDTO> listPriceDesc() {
         return RentPostService.sortByPriceDesc();
     }
 
 
     @GetMapping(value = "/rentPosts/listPricesAsc")
-    public List<RentPost> listPriceAsc() {
+    public List<RentPostReadDTO> listPriceAsc() {
         return RentPostService.sortByPriceAsc();
     }
 
@@ -73,15 +60,15 @@ public class RentPostController {
     }
 
     @GetMapping(value = "/rentPosts/listTimePostAsc")
-    public List<RentPost> listTimePostAsc() {
+    public List<RentPostReadDTO> listTimePostAsc() {
         return RentPostService.sortByTimePostAsc();
     }
 
-    @RequestMapping(value = "/rentPosts/listStatus/{status}", method = {RequestMethod.GET, RequestMethod.POST}
+    @RequestMapping(value = "/rentPosts/listStatus", method = {RequestMethod.GET, RequestMethod.POST}
             , produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
-    public List<RentPost> listStatus(@PathVariable("status") String status) {
-        return RentPostService.searchByStatus(status);
+    public List<RentPostReadDTO> listStatus() {
+        return RentPostService.searchByStatus("còn");
     }
 
 

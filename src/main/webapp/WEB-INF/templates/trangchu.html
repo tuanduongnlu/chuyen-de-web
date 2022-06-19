@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:insert="header :: head">
     <meta charset="UTF-8">
@@ -21,16 +21,17 @@
                     <div class="col-sm-12">
                         <div class="grid-option">
                             <form>
-                                <select class="custom-select">
-                                    <option selected>All</option>
-                                    <option value="1">New to Old</option>
-                                    <option value="2">For Rent</option>
-                                    <option value="3">For Sale</option>
+                                <select class="custom-select" id="filter" onchange="filterRoom()">
+                                    <option selected value="0"  >Mặc định</option>
+                                    <option value="1">Giá giảm dần</option>
+                                    <option value="2">Giá tăng dần</option>
+                                    <option value="3">Phòng chưa thuê</option>
                                 </select>
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="list-room row">
+                    <div class="col-md-4" id="room">
                         <div class="card-box-a card-shadow">
                             <div class="img-box-a">
                                 <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid">
@@ -39,37 +40,37 @@
                                 <div class="card-overlay-a-content">
                                     <div class="card-header-a">
                                         <h2 class="card-title-a">
-                                            <a href="#">204 Mount
-                                                <br /> Olive Road Two</a>
+                                            <a href="#">Quận 7
+                                                <br /> phường xx</a>
                                         </h2>
                                     </div>
                                     <div class="card-body-a">
                                         <div class="price-box d-flex">
-                                            <span class="price-a">rent | $ 12.000</span>
+                                            <span class="price-a">Giá |  12.000</span>
                                         </div>
-                                        <a href="property-single.html" class="link-a">Click here to view
+                                        <a href="property-single.html" class="link-a">Click để xem chi tiết
                                             <span class="bi bi-chevron-right"></span>
                                         </a>
                                     </div>
                                     <div class="card-footer-a">
                                         <ul class="card-info d-flex justify-content-around">
                                             <li>
-                                                <h4 class="card-info-title">Area</h4>
+                                                <h4 class="card-info-title">Diện tích</h4>
                                                 <span>340m
                           <sup>2</sup>
                         </span>
                                             </li>
                                             <li>
-                                                <h4 class="card-info-title">Beds</h4>
-                                                <span>2</span>
+                                                <h4 class="card-info-title">Loại phòng</h4>
+                                                <span>Chung cư</span>
                                             </li>
                                             <li>
-                                                <h4 class="card-info-title">Baths</h4>
-                                                <span>4</span>
+                                                <h4 class="card-info-title">Ngày đăng</h4>
+                                                <span>xx/xx/xxxx</span>
                                             </li>
                                             <li>
-                                                <h4 class="card-info-title">Garages</h4>
-                                                <span>1</span>
+                                                <h4 class="card-info-title">Tình trạng</h4>
+                                                <span>Còn</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -78,6 +79,7 @@
                         </div>
                     </div>
 
+                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="pagination-a">
@@ -111,5 +113,132 @@
     </section><!-- End Latest News Section -->
 </main><!-- End #main -->
 <div th:insert="footer :: footer"></div>
+<script>
+    function addRoom(e){
+        console.log(e);
+        for(const room of e) {
+
+        $(".list-room").append(
+            " <div class=\"col-md-4\" id='room'>\n" +
+            "                        <div class=\"card-box-a card-shadow\">\n" +
+            "                            <div class=\"img-box-a\">\n" +
+            "                                <img src=\""+room.images[0].link +"\" alt=\"\" class=\"img-a img-fluid\">\n" +
+            "                            </div>\n" +
+            "                            <div class=\"card-overlay\">\n" +
+            "                                <div class=\"card-overlay-a-content\">\n" +
+            "                                    <div class=\"card-header-a\">\n" +
+            "                                        <h2 class=\"card-title-a\">\n" +
+            "                                            <a th:href=\"@{/rentPosts/"+room.id+"}\">"+room.location.distric+"\n" +
+            "                                                <br /> "+ room.location.ward +"</a>\n" +
+            "                                        </h2>\n" +
+            "                                    </div>\n" +
+            "                                    <div class=\"card-body-a\">\n" +
+            "                                        <div class=\"price-box d-flex\">\n" +
+            "                                            <span class=\"price-a\">Giá | "+ room.price +"  VND</span>\n" +
+            "                                        </div>\n" +
+            "                                        <a class='link-a' href=\"/rentPosts/"+room.id+"\" >" + "Click để xem chi tiết" + "</a>" +
+            "                                            <span class=\"bi bi-chevron-right\"></span>\n" +
+            "                                    </div>\n" +
+            "                                    <div class=\"card-footer-a\">\n" +
+            "                                        <ul class=\"card-info d-flex justify-content-around\">\n" +
+            "                                            <li>\n" +
+            "                                                <h4 class=\"card-info-title\">Diện tích</h4>\n" +
+            "                                                <span>"+room.acreage +"\n" +
+            "                          <sup>2</sup>\n" +
+            "                        </span>\n" +
+            "                                            </li>\n" +
+            "                                            <li>\n" +
+            "                                                <h4 class=\"card-info-title\">Loại phòng</h4>\n" +
+            "                                                <span>"+ room.roomType.name +"</span>\n" +
+            "                                            </li>\n" +
+            "                                            <li>\n" +
+            "                                                <h4 class=\"card-info-title\">Ngày đăng</h4>\n" +
+            "                                                <span>"+room.timePost+"</span>\n" +
+            "                                            </li>\n" +
+            "                                            <li>\n" +
+            "                                                <h4 class=\"card-info-title\">Tình trạng</h4>\n" +
+            "                                                <span>"+room.status+"</span>\n" +
+            "                                            </li>\n" +
+            "                                        </ul>\n" +
+            "                                    </div>\n" +
+            "                                </div>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" +
+            "                    </div>"
+        )
+        }
+    }
+    function filterRoom() {
+        $("#room").remove();
+        var value = document.getElementById("filter").value ;
+        if(value==0) {
+            fetch('http://localhost:8080/api/rentPosts/listTimePostAsc',{
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(res =>res.json())
+                .then(data => {
+                    for(room of data)
+                        addRoom(data)
+                })
+        }
+        if(value==1){
+            fetch('http://localhost:8080/api/rentPosts/listPricesAsc',{
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(res =>res.json())
+                .then(data => {
+                        addRoom(data)
+                })
+        }
+        if(value==2){
+            fetch('http://localhost:8080/api/rentPosts/listPricesDesc',{
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(res =>res.json())
+                .then(data => {
+                        addRoom(data)
+                })
+        }
+        if(value==3){
+            fetch('http://localhost:8080/api/rentPosts/listStatus',{
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(res =>res.json())
+                .then(data => {
+                        addRoom(data)
+                })
+        }
+    }
+function loadListRoom() {
+    fetch('http://localhost:8080/api/rentPosts/listTimePostAsc',{
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+        .then(res =>res.json())
+        .then(data => {
+            addRoom(data)
+        })
+}
+loadListRoom();
+</script>
 </body>
 </html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="header :: head">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:insert="header :: header"></div>
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h2 class="title-single" th:utext="${room.title}"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<!-- ======= Property Single ======= -->
+<section class="property-single nav-arrow-b">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div id="property-single-carousel" class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="carousel-item-b swiper-slide">
+                            <img th:src="@{/assets/img/slide-1.jpg}" alt="">
+                        </div>
+                        <div class="carousel-item-b swiper-slide">
+                            <img th:src="@{/assets/img/slide-2.jpg}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="property-single-carousel-pagination carousel-pagination"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="row justify-content-between">
+                    <div class="col-md-5 col-lg-4">
+                        <div class=" d-flex justify-content-center foo">
+
+
+                            <div class="card-title-c align-self-center">
+                                <h5 class="title-c">15000 VND/tháng</h5>
+                            </div>
+                        </div>
+
+                        <div class="property-summary">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="title-box-d section-t4">
+                                        <h3 class="title-d">Thông tin</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summary-list">
+                                <ul class="list">
+
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Địa chỉ:</strong>
+                                        <span th:utext="${room.location.distric}+ ' ,' +${room.location.ward} +', ' +${room.location.detail} "></span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Loại phòng:</strong>
+                                        <span th:utext="${room.roomType.name}"></span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Tình trạng:</strong>
+                                        <span th:utext="${room.status}"></span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Diện tích:</strong>
+                                        <span th:utext="${room.acreage} + 'm'">
+                          <sup>2</sup>
+                        </span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Ngày đăng:</strong>
+                                        <span th:utext="${room.timePost}"></span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Đối tượng cho thuê:</strong>
+                                        <span th:utext="${room.sex}"></span>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-7 section-md-t3">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="title-box-d">
+                                    <h3 class="title-d">Mô tả chi tiết</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="property-description">
+                            <p th:utext="${room.detail}" class="description color-text-a">
+
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row section-t3">
+                    <div class="col-sm-12">
+                        <div class="title-box-d">
+                            <h3 class="title-d">Người cho thuê</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="property-agent">
+                            <h4 class="title-agent" th:utext="${room.user.name}"></h4>
+
+                            <ul class="list-unstyled">
+                                <li class="d-flex justify-content-between">
+                                    <strong>Phone:</strong>
+                                    <span class="color-text-a" th:utext="${room.user.phone}" ></span>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <strong>Email:</strong>
+                                    <span class="color-text-a" th:utext="${room.user.email}"></span>
+                                </li>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+</section><!-- End Property Single-->
+<section class="section-news section-t8">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-wrap d-flex justify-content-between">
+                    <div class="title-box">
+                        <h2 class="title-a">Bài đăng cùng thể loại</h2>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="news-carousel" class="swiper">
+            <div class="swiper-wrapper">
+
+                <div class="carousel-item-c swiper-slide">
+                    <div class="card-box-b card-shadow news-box">
+                        <div class="img-box-b">
+                            <img th:src="@{/assets/img/post-2.jpg}" alt="" class="img-b img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-header-b">
+                                <div class="card-category-b">
+                                    <a href="#" class="category-b">House</a>
+                                </div>
+                                <div class="card-title-b">
+                                    <h2 class="title-2">
+                                        <a href="blog-single.html">House is comming
+                                            <br> new</a>
+                                    </h2>
+                                </div>
+                                <div class="card-date">
+                                    <span class="date-b">18 Sep. 2017</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End carousel item -->
+
+                <div class="carousel-item-c swiper-slide">
+                    <div class="card-box-b card-shadow news-box">
+                        <div class="img-box-b">
+                            <img th:src="@{/assets/img/post-5.jpg}" alt="" class="img-b img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-header-b">
+                                <div class="card-category-b">
+                                    <a href="#" class="category-b">Travel</a>
+                                </div>
+                                <div class="card-title-b">
+                                    <h2 class="title-2">
+                                        <a href="blog-single.html">Travel is comming
+                                            <br> new</a>
+                                    </h2>
+                                </div>
+                                <div class="card-date">
+                                    <span class="date-b">18 Sep. 2017</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End carousel item -->
+
+                <div class="carousel-item-c swiper-slide">
+                    <div class="card-box-b card-shadow news-box">
+                        <div class="img-box-b">
+                            <img th:src="@{/assets/img/post-7.jpg}" alt="" class="img-b img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-header-b">
+                                <div class="card-category-b">
+                                    <a href="#" class="category-b">Park</a>
+                                </div>
+                                <div class="card-title-b">
+                                    <h2 class="title-2">
+                                        <a href="blog-single.html">Park is comming
+                                            <br> new</a>
+                                    </h2>
+                                </div>
+                                <div class="card-date">
+                                    <span class="date-b">18 Sep. 2017</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End carousel item -->
+
+                <div class="carousel-item-c swiper-slide">
+                    <div class="card-box-b card-shadow news-box">
+                        <div class="img-box-b">
+                            <img th:src="@{/assets/img/post-3.jpg}" alt="" class="img-b img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-header-b">
+                                <div class="card-category-b">
+                                    <a href="#" class="category-b">Travel</a>
+                                </div>
+                                <div class="card-title-b">
+                                    <h2 class="title-2">
+                                        <a href="#">Travel is comming
+                                            <br> new</a>
+                                    </h2>
+                                </div>
+                                <div class="card-date">
+                                    <span class="date-b">18 Sep. 2017</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End carousel item -->
+
+            </div>
+        </div>
+
+        <div class="news-carousel-pagination carousel-pagination"></div>
+    </div>
+</section><!-- End Latest News Section -->
+
+</div>
+</div>
+</div>
+</section><!-- End Property Single-->
+
+</main><!-- End #main -->
+<div th:insert="footer :: footer"></div>
+</body>
+</html>

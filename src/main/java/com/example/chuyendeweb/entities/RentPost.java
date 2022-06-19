@@ -1,18 +1,25 @@
 package com.example.chuyendeweb.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RentPost {
+public class RentPost implements Serializable {
+    private static final long serialVersionUID = 7385741327704693623L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id ;
@@ -21,22 +28,26 @@ public class RentPost {
     java.util.Date timePost = new Date();
     @ManyToOne
     @JoinColumn(name = "roomType_id")
+    @JsonManagedReference
     RoomType roomType;
     String title;
     String detail;
     int price;
     double acreage ;
     @OneToMany(mappedBy = "rentpost", cascade = CascadeType.ALL)
-    Collection<Image> images;
+    @JsonBackReference
+    List<Image> images;
     String sex ;
     String status;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
+    @JsonManagedReference
     location location;
     @ManyToOne
-    @JoinColumn(name="User_id")
+    @JoinColumn(name="user_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
     User user;
 
 

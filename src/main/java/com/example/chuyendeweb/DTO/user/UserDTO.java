@@ -16,7 +16,7 @@ public class UserDTO {
     private String email;
     private String password;
 
-    public User transUser() {
+    public  User transUser() {
         User user = new User();
         user.setName(this.name);
         user.setEmail(this.email);
@@ -26,5 +26,8 @@ public class UserDTO {
         user.setCreate_date(new Date());
         user.getRoles().add(new Role(1l,"user"));
         return user;
+    }
+    public static UserDTO transtoDTO(User user){
+        return new UserDTO(user.getName(), user.getPhone(), user.getEmail(),user.getPassword());
     }
 }

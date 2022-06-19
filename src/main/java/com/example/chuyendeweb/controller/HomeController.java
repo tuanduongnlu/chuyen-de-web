@@ -1,16 +1,13 @@
 package com.example.chuyendeweb.controller;
 
+import com.example.chuyendeweb.DTO.rentPost.RentPostWriteDTO;
 import com.example.chuyendeweb.DTO.user.UserDTO;
-import com.example.chuyendeweb.entities.Distric;
-import com.example.chuyendeweb.entities.RoomType;
-import com.example.chuyendeweb.entities.User;
-import com.example.chuyendeweb.entities.Ward;
-import com.example.chuyendeweb.service.DistricService;
-import com.example.chuyendeweb.service.RoomTypeService;
-import com.example.chuyendeweb.service.UserService;
-import com.example.chuyendeweb.service.WardService;
+import com.example.chuyendeweb.entities.*;
+import com.example.chuyendeweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,14 +15,18 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class HomeController {
+    @Autowired
+    RentPostService rentPostService;
     @Autowired
     UserService userService;
     @Autowired
@@ -34,6 +35,9 @@ public class HomeController {
     DistricService districService;
     @Autowired
     RoomTypeService roomTypeService;
+    @Autowired
+    FilesStorageService  storageService;
+
 
     @GetMapping(value="api/roomtypes",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
@@ -76,6 +80,42 @@ public class HomeController {
             request.login(phone, password);
         } catch (ServletException e) {
         }
-        return "trangchu";
+        return "redirect:home";
     }
+    @GetMapping(value = "/rentPosts/{id}",produces={"text/css"})
+    public String listTypeRoom(@PathVariable("id") int id,Model model) {
+        RentPost rentPost = rentPostService.getById(id);
+        model.addAttribute("room",rentPost);
+        return "RoomDetail";
+    }
+    @GetMapping(value = {"/post/{x}"} )
+    public String postDetail(){
+        return "rentPost";
+    }
+
+    @GetMapping(value = "/post")
+    public String getPostPage(Model model) {
+        RentPostWriteDTO rentPost = new RentPostWriteDTO();
+        model.addAttribute("rentPost",rentPost);
+        return "rentPost";
+    }
+    @PostMapping(value = "/post")
+    public String post(@ModelAttribute RentPostWriteDTO writeDTO ) {
+        RentPost rentPost = RentPostWriteDTO.trantToRentpost(writeDTO);
+        rentPost.setRoomType(roomTypeService.getById(writeDTO.getRoomType()));
+        rentPost.setUser(userService.getByName(writeDTO.getUsername()));
+        List<Image> images = new ArrayList<>();
+        for(MultipartFile file:writeDTO.getImages()) {
+            try {
+                storageService.save(file);
+                Image image = new Image(0,"/upload/"+file.getOriginalFilename(),rentPost);
+                images.add(image);
+            } catch (Exception e) {
+            }
+        }
+        rentPost.setImages(images);
+        rentPostService.saveOrUpdate(rentPost);
+        return "/";
+    }
+
 }
