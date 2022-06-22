@@ -22,7 +22,7 @@ public class FilesController {
             message +=  file.getOriginalFilename() +", ";
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message + " " + e.getMessage());
         }
     }
         return ResponseEntity.status(HttpStatus.OK).body(message);

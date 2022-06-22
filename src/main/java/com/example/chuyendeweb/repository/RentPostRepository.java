@@ -18,7 +18,7 @@ public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
     List<RentPost> findByStatusOrderByTimePostDesc(String status);
     RentPost findByUser_id(Long id);
     @Query(value = "select r.* from rent_post as r join location as l " +
-            "on r.location_id = l.id where l.distric= :distric_id and l.ward= :ward_id" +
+            "on r.location_id = l.id where l.dictric_id= :distric_id and l.ward_id= :ward_id" +
             " and r.room_type_id= :roomtype and r.price between :startPrice and :endPrice" +
             " and r.acreage between :startArea and :endArea ",nativeQuery = true)
     List<RentPost> search (@Param("distric_id") int distric_id,@Param("ward_id") int ward_id,
@@ -26,7 +26,7 @@ public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
                                      @Param("endPrice") int endPrice, @Param("startArea") int startArea,
                                      @Param("endArea") int endArea);
     @Query(value = "select r.* from rent_post as r join location as l " +
-            "on r.location_id = l.id where l.distric= :distric_id and l.ward= :ward_id" +
+            "on r.location_id = l.id where l.dictric_id= :distric_id and l.ward_id= :ward_id" +
             "  and r.price between :startPrice and :endPrice" +
             " and r.acreage between :startArea and :endArea ",nativeQuery = true)
     List<RentPost> searchNotRoomtype (@Param("distric_id") int distric_id,@Param("ward_id") int ward_id,
@@ -42,7 +42,7 @@ public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
                            @Param("endArea") int endArea);
 
     @Query(value = "select r.* from rent_post as r join location as l " +
-            "on r.location_id = l.id where l.distric= :distric_id " +
+            "on r.location_id = l.id where l.dictric_id= :distric_id " +
             " and r.room_type_id= :roomtype and r.price between :startPrice and :endPrice" +
             " and r.acreage between :startArea and :endArea ",nativeQuery = true)
     List<RentPost> searchNotWard (@Param("distric_id") int distric_id,
@@ -51,7 +51,7 @@ public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
                            @Param("endArea") int endArea);
 
     @Query(value = "select r.* from rent_post as r join location as l " +
-            "on r.location_id = l.id where l.distric= :distric_id " +
+            "on r.location_id = l.id where l.dictric_id= :distric_id " +
             " and r.price between :startPrice and :endPrice" +
             " and r.acreage between :startArea and :endArea ",nativeQuery = true)
     List<RentPost> searchNotWardAndRoomType (@Param("distric_id") int distric_id, @Param("startPrice") int startPrice,

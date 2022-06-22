@@ -29,8 +29,9 @@ public class RentPostService {
         repository.save(rentPost);
     }
 
-    public RentPost getById(int id) {
-        return  repository.getById(id);
+    public RentPostReadDTO getById(int id) {
+        RentPostReadDTO readDTO = RentPostReadDTO.transtoDTO(repository.getById(id));
+        return readDTO ;
     }
 
     //tim kiem theo loai phong ,co sap xep ngay dang
@@ -82,35 +83,55 @@ public class RentPostService {
         return  repository.findByUser_id(id);
     }
     //search
-    public List<RentPost> search ( int distric_id,  int ward_id,
+    public List<RentPostReadDTO> search ( int distric_id,  int ward_id,
                           int roomtype,  int startPrice,
                             int endPrice,  int startArea,
                            int endArea){
-        return repository.search(distric_id,ward_id,roomtype,startPrice,endPrice,startArea,endArea);
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.search(distric_id,ward_id,roomtype,startPrice,endPrice,startArea,endArea)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
     };
 
-    public List<RentPost> searchNotRoomtype ( int distric_id, int ward_id,
+    public List<RentPostReadDTO> searchNotRoomtype ( int distric_id, int ward_id,
                                        int startPrice,
                                       int endPrice, int startArea,
                                        int endArea){
-        return repository.searchNotRoomtype(distric_id,ward_id,startPrice,endPrice,startArea,endArea);
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.searchNotRoomtype(distric_id,ward_id,startPrice,endPrice,startArea,endArea)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
     };
 
-    public List<RentPost> searchNotLocation ( int roomtype,int startPrice,
+    public List<RentPostReadDTO> searchNotLocation ( int roomtype,int startPrice,
                                       int endPrice, int startArea,
                                      int endArea) {
-        return repository.searchNotLocation(roomtype,startPrice,endPrice,startArea,endArea);
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.searchNotLocation(roomtype,startPrice,endPrice,startArea,endArea)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
     };
 
-    public List<RentPost> searchNotWard ( int distric_id,
+    public List<RentPostReadDTO> searchNotWard ( int distric_id,
                                   int roomtype,  int startPrice,
                                   int endPrice,  int startArea,
                                   int endArea){
-        return repository.searchNotWard(distric_id,roomtype,startPrice,endPrice,startArea,endArea);
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.searchNotWard(distric_id,roomtype,startPrice,endPrice,startArea,endArea)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
     };
-    public List<RentPost> searchNotWardAndRoomType(int distric_id, int startPrice,
+    public List<RentPostReadDTO> searchNotWardAndRoomType(int distric_id, int startPrice,
                                                    int endPrice, int startArea,
                                                    int endArea){
-        return repository.searchNotWardAndRoomType(distric_id,startPrice,endPrice,startArea,endArea);
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.searchNotWardAndRoomType(distric_id,startPrice,endPrice,startArea,endArea)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
     };
 }

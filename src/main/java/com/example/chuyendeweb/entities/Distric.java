@@ -2,6 +2,7 @@ package com.example.chuyendeweb.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,9 @@ public class Distric implements Serializable {
     int id;
     String name;
     String prefix;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToOne( mappedBy = "distric")
     @JsonBackReference
-    List<Ward> wards = new ArrayList<>();
+    location location;
+
 
 }

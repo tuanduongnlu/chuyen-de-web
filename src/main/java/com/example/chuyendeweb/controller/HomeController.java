@@ -1,5 +1,6 @@
 package com.example.chuyendeweb.controller;
 
+import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
 import com.example.chuyendeweb.DTO.rentPost.RentPostWriteDTO;
 import com.example.chuyendeweb.DTO.user.UserDTO;
 import com.example.chuyendeweb.entities.*;
@@ -26,8 +27,6 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    RentPostService rentPostService;
-    @Autowired
     UserService userService;
     @Autowired
     WardService wardService;
@@ -36,31 +35,34 @@ public class HomeController {
     @Autowired
     RoomTypeService roomTypeService;
     @Autowired
-    FilesStorageService  storageService;
+    RentPostService rentPostService;
 
 
-    @GetMapping(value="api/roomtypes",produces = {MediaType.APPLICATION_JSON_VALUE,
+
+    @GetMapping(value="/roomtypes",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public List<RoomType> roomTypes (){
         return roomTypeService.roomTypes();
     }
 
-    @GetMapping("api/wards/{id}")
+    @GetMapping("/wards/{id}")
     @ResponseBody
     public List<Ward> wards(@PathVariable int id)
     {
         return wardService.getWardsByDictric_id(id);
     }
 
-    @GetMapping("api/districs")
+    @GetMapping("/districs")
     @ResponseBody
     public List<Distric> districs() {
         return districService.districs();
     }
 
     @GetMapping(value = {"/","home",""} )
-    public String home(){
+    public String home(Model model){
+        List<RentPostReadDTO> list = rentPostService.sortByTimePostAsc();
+        model.addAttribute("listRoom",list);
         return "trangchu";
     }
 
@@ -82,40 +84,6 @@ public class HomeController {
         }
         return "redirect:home";
     }
-    @GetMapping(value = "/rentPosts/{id}",produces={"text/css"})
-    public String listTypeRoom(@PathVariable("id") int id,Model model) {
-        RentPost rentPost = rentPostService.getById(id);
-        model.addAttribute("room",rentPost);
-        return "RoomDetail";
-    }
-    @GetMapping(value = {"/post/{x}"} )
-    public String postDetail(){
-        return "rentPost";
-    }
 
-    @GetMapping(value = "/post")
-    public String getPostPage(Model model) {
-        RentPostWriteDTO rentPost = new RentPostWriteDTO();
-        model.addAttribute("rentPost",rentPost);
-        return "rentPost";
-    }
-    @PostMapping(value = "/post")
-    public String post(@ModelAttribute RentPostWriteDTO writeDTO ) {
-        RentPost rentPost = RentPostWriteDTO.trantToRentpost(writeDTO);
-        rentPost.setRoomType(roomTypeService.getById(writeDTO.getRoomType()));
-        rentPost.setUser(userService.getByName(writeDTO.getUsername()));
-        List<Image> images = new ArrayList<>();
-        for(MultipartFile file:writeDTO.getImages()) {
-            try {
-                storageService.save(file);
-                Image image = new Image(0,"/upload/"+file.getOriginalFilename(),rentPost);
-                images.add(image);
-            } catch (Exception e) {
-            }
-        }
-        rentPost.setImages(images);
-        rentPostService.saveOrUpdate(rentPost);
-        return "/";
-    }
 
 }

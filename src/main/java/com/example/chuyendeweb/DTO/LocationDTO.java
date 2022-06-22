@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LocationDTO {
     int id;
-    int distric;
-    int ward;
+    String distric;
+    String ward;
     String detail;
     public static LocationDTO trantoDTO(location location) {
-        return new LocationDTO(location.getId(),location.getDistric(), location.getWard(), location.getDetail());
+        return new LocationDTO(location.getId(),location.getDistric().getPrefix()+" "+location.getDistric().getName(),
+                location.getWard().getPrefix()+" "+location.getWard().getName(), location.getDetail());
     }
 }

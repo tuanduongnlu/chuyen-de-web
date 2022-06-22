@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-  </script>
+<html lang="vn">
+<head th:insert="header :: head">
+
 </head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
 <body>
+<div th:insert="header :: header"></div>
+<section class="section-news section-t8">
 <div class="wrapper">
   <div class="title-text">
     <div class="title login">Đăng nhập</div>
@@ -65,6 +66,8 @@
     </div>
   </div>
 </div>
+</section>
+
 <script>
   function checkPhone() {
     var phone =document.querySelector(".phonedk").value;

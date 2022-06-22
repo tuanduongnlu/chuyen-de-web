@@ -14,4 +14,7 @@ public class DistricService {
     public List<Distric> districs () {
         return repository.findAll();
     }
+    public  Distric findById(int id) {
+        return repository.findById(id);
+    }
 }

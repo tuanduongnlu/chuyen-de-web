@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface WardRepository extends JpaRepository<Ward,Integer> {
-    public List<Ward> findAllByDistric_id(int id);
+    public List<Ward> findAllByDictric(int dictric);
+    public Ward findById (int id);
 }

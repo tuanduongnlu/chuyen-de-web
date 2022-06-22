@@ -1,11 +1,175 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:insert="header :: head">
-    <meta charset="UTF-8">
-    <title></title>
 </head>
+<link th:href="@{/css/rentPost.css}" rel="stylesheet">
 <body>
 <div th:insert="header :: header"></div>
+<section class="section-news section-t8">
+
+    <div class="card-heading">
+        <h2 class="title">Đăng tin mới</h2>
+    </div>
+    <div class="card-body">
+        <form th:action="@{/post}"  method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <h2>Địa chỉ cho thuê</h2>
+            </div>
+            <div class="form-row">
+                <div class="name">Địa chỉ</div>
+                <div class="value ">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-group mt-3">
+                            <label class="pb-2">Quận</label>
+                            <select class="form-control form-select form-control-a "  id="distric-post" name="distric_id"
+                                    onchange="getwardPost()">
+                                <option value="0">Tất cả</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-group mt-3">
+                            <label class="pb-2">Phường</label>
+                            <select class="form-control form-select form-control-a " id="wards-post" name="ward_id">
+                                <option class="ward-post" value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="pb-2">Chi tiết</label>
+                    <input class="input--style-6" type="text" name="street" >
+                </div>
+            </div>
+            <div class="form-row">
+                <h2>Thông tin mô tả</h2>
+            </div>
+            <div class="form-row">
+                <div class="name">Loại chuyên mục</div>
+                <div class="value">
+                    <div class="input-group">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <select class="form-control form-select form-control-a " id="typePost"  name="roomType">
+                                    <option value="0">Tất cả</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Tiêu đề</div>
+                <div class="value">
+                    <div class="input-group">
+                        <input class="input--style-6" name="title">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Nội dung mô tả</div>
+                <div class="value">
+                    <div class="input-group">
+                        <textarea class="textarea--style-6"  name="detail"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Giá cho thuê</div>
+                <div class="value">
+                    <input class="input--style-6" type="number" name="price">
+                    <div class="label--desc">Nhập đầy đủ số ,ví dụ 1 triệu thì nhập : 1000000</div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="name">Diện tích</div>
+                <div class="value">
+                    <input class="input--style-6" type="number" name="acreage">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Đối tượng cho thuê</div>
+                <div class="value">
+                    <div class="input-group">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <select class="form-control form-select form-control-a " name="sex">
+                                    <option value="Tất cả">Tất cả</option>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Upload ảnh</div>
+                <div class="value">
+                    <div class="input-group ">
+                        <input class="input-file" type="file" name="images" id="file" multiple>
+                        <label class="label--file" for="file">Chọn ảnh</label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <button class="btn1 btn1--radius-2 btn1--blue-2" type="submit">Gửi bài đăng</button>
+            </div>
+        </form>
+    </div>
+</section>
 <div th:insert="footer :: footer"></div>
+<script>
+    fetch('http://localhost:8080/roomtypes', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+                for (type of data) {
+                    $("#typePost").append("<option value=" + type.id + ">" + type.name + "</option>")
+                }
+            }
+        )
+    fetch('http://localhost:8080/districs', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+                for (distric of data) {
+                    $("#distric-post").append("<option value=" + distric.id + ">" + distric.prefix + " " + distric.name + "</option>")
+                }
+            }
+        )
+
+    function getwardPost() {
+        $(".ward-post").remove();
+        var districid = document.getElementById("distric-post").value;
+        fetch('http://localhost:8080/wards/' + districid, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                    if (Object.keys(data).length === 0) {
+                        $("#wards-post").append("<option class='ward-post' value='0'> </option>")
+                    }
+                    for (ward of data) {
+                        $("#wards-post").append("<option class='ward-post' value=" + ward.id + ">" + ward.prefix + " " + ward.name + "</option>")
+                    }
+                }
+            )
+    }
+</script>
 </body>
 </html>

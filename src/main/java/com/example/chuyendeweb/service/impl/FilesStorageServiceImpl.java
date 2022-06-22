@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
-    private final Path root = Paths.get("uploads");
+    private final Path root = Paths.get("F:\\idea\\CDWeb\\src\\main\\resources\\static\\images");
 
     @Override
     public void init() {

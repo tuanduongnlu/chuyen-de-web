@@ -15,6 +15,9 @@ public class WardService {
         return repository.findAll();
     }
     public List<Ward> getWardsByDictric_id(int id) {
-        return repository.findAllByDistric_id(id);
+        return repository.findAllByDictric(id);
+    }
+    public  Ward findById(int id) {
+        return  repository.findById(id);
     }
 }
