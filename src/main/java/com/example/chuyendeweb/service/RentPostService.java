@@ -5,6 +5,8 @@ import com.example.chuyendeweb.entities.RentPost;
 import com.example.chuyendeweb.repository.RentPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,6 @@ import java.util.List;
 
 @Service @RequiredArgsConstructor
 public class RentPostService {
-
     private final  RentPostRepository repository;
 
     // tra ve danh sach
@@ -33,7 +34,9 @@ public class RentPostService {
         RentPostReadDTO readDTO = RentPostReadDTO.transtoDTO(repository.getById(id));
         return readDTO ;
     }
-
+    public RentPost findById(int id ){
+        return repository.getById(id);
+    }
     //tim kiem theo loai phong ,co sap xep ngay dang
     public List<RentPostReadDTO> searchByTypeRoom(Long idRoom){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
@@ -43,37 +46,41 @@ public class RentPostService {
         return rentPostReadDTOS;
     }
     // sap xep theo gia giam
-    public List<RentPostReadDTO> sortByPriceDesc(){
+    public List<RentPostReadDTO> sortByPriceDesc(Pageable pageable){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
-        for (RentPost e:repository.findAllByOrderByPriceDesc()) {
+        for (RentPost e:repository.findAllByOrderByPriceDesc(pageable)) {
             rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
         }
      return rentPostReadDTOS;
     }
     // sap xep theo gia tang
-    public List<RentPostReadDTO> sortByPriceAsc(){
+    public List<RentPostReadDTO> sortByPriceAsc(Pageable pageable){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
-        for (RentPost e:repository.findAllByOrderByPriceAsc()) {
+        for (RentPost e:repository.findAllByOrderByPriceAsc(pageable)) {
             rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
         }
         return rentPostReadDTOS;
     }
     // sap xep theo ngay dang tang
-    public List<RentPost> sortByTimePostDesc(){
-        return repository.findAllByOrderByTimePostDesc();
+    public List<RentPostReadDTO> sortByTimePostDesc(Pageable pageable){
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.findAllByOrderByTimePostDesc(pageable)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
     }
     // sap xep theo ngay dang giam
-    public List<RentPostReadDTO> sortByTimePostAsc(){
+    public List<RentPostReadDTO> sortByTimePostAsc(Pageable pageable){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
-        for (RentPost e:repository.findAllByOrderByTimePostAsc()) {
+        for (RentPost e:repository.findAllByOrderByTimePostAsc(pageable)) {
             rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
         }
         return rentPostReadDTOS;
     }
     //tim kiem theo tinh trang
-    public List<RentPostReadDTO> searchByStatus(String status){
+    public List<RentPostReadDTO> searchByStatus(String status,Pageable pageable){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
-        for (RentPost e:repository.findByStatusOrderByTimePostDesc(status)) {
+        for (RentPost e:repository.findByStatusOrderByTimePostDesc(status,pageable)) {
             rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
         }
         return rentPostReadDTOS;
@@ -134,4 +141,17 @@ public class RentPostService {
         }
         return rentPostReadDTOS;
     };
+    // tim phong tuong tu
+ public List<RentPostReadDTO> roomTuongTu(int dictric,int roomType) {
+     List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+     for (RentPost e:repository.roomTuongTu(dictric,roomType)) {
+         rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+     }
+     return rentPostReadDTOS;
+ }
+
+
+    public int count() {
+        return (int) repository.count();
+    }
 }

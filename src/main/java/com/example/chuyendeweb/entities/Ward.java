@@ -1,14 +1,13 @@
 package com.example.chuyendeweb.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,8 +21,8 @@ public class Ward implements Serializable {
     String name ;
     String prefix;
     int dictric;
-    @OneToOne( mappedBy = "ward")
+    @OneToMany( mappedBy = "ward")
     @JsonBackReference
-    location location;
+    List<Location> locations;
 
 }

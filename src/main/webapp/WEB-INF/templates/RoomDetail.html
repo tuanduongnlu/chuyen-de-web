@@ -23,15 +23,16 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div id="property-single-carousel" class="swiper">
+                <div id="property-single-carousel" class="swiper mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="carousel-item-b swiper-slide">
-                            <img th:src="@{/assets/img/slide-1.jpg}" alt="">
-                        </div>
-                        <div class="carousel-item-b swiper-slide">
-                            <img th:src="@{/assets/img/slide-2.jpg}" alt="">
-                        </div>
+                        <th:block th:each="image : ${room.images}">
+                            <div class="swiper-slide ">
+                                <img th:src="@{${image.link}}" alt="">
+                            </div>
+                        </th:block>
                     </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
                 <div class="property-single-carousel-pagination carousel-pagination"></div>
             </div>
@@ -139,57 +140,79 @@
     </div>
     </div>
 </section><!-- End Property Single-->
+<!-- ======= Latest Properties Section ======= -->
 <section class="section-news section-t8">
+<section class="property-grid grid">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <div class="title-wrap d-flex justify-content-between">
-                    <div class="title-box">
-                        <h2 class="title-a">Bài đăng cùng thể loại</h2>
-                    </div>
-
-                </div>
+            <div class="title-box">
+                <h2 class="title-a">Bài viết tương tự</h2>
             </div>
-        </div>
+            <div class="list-room row">
+                <th:block  th:each="room : ${list}">
+                    <div class="col-md-4 room" id="room">
+                        <div class="card-box-a card-shadow">
+                            <div class="img-box-a">
+                                <img th:src="@{${room.images[0].link}}" alt="" class="img-a img-fluid">
+                            </div>
+                            <div class="card-overlay">
+                                <div class="card-overlay-a-content">
+                                    <div class="card-header-a">
+                                        <h2 class="card-title-a">
+                                            <a href="#" th:utext="${room.location.distric}">
+                                            </a> <br/>
+                                            <a th:utext="${room.location.ward}"></a>
+                                        </h2>
+                                    </div>
+                                    <div class="card-body-a">
+                                        <div class="price-box d-flex">
+                                            <span class="price-a" th:utext="'Giá | '+ ${room.price} + ' VND'"></span>
+                                        </div>
+                                        <a th:href="@{'/posts/' + ${room.id}}" class="link-a">Click để xem chi tiết
+                                            <span class="bi bi-chevron-right"></span>
+                                        </a>
+                                    </div>
+                                    <div class="card-footer-a">
+                                        <ul class="card-info d-flex justify-content-around">
+                                            <li>
+                                                <h4 class="card-info-title">Diện tích</h4>
+                                                <span th:text="${room.acreage} +'m'" >
 
-        <div id="news-carousel" class="swiper">
-            <div class="swiper-wrapper">
-
-                <div class="carousel-item-c swiper-slide">
-                    <div class="card-box-b card-shadow news-box">
-                        <div class="img-box-b">
-                            <img th:src="@{/assets/img/post-2.jpg}" alt="" class="img-b img-fluid">
-                        </div>
-                        <div class="card-overlay">
-                            <div class="card-header-b">
-                                <div class="card-category-b">
-                                    <a href="#" class="category-b">House</a>
-                                </div>
-                                <div class="card-title-b">
-                                    <h2 class="title-2">
-                                        <a href="blog-single.html">House is comming
-                                            <br> new</a>
-                                    </h2>
-                                </div>
-                                <div class="card-date">
-                                    <span class="date-b">18 Sep. 2017</span>
+                        </span><sup>2</sup>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Loại phòng</h4>
+                                                <span  th:utext="${room.roomType.name}"></span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Ngày đăng</h4>
+                                                <span th:utext="${room.timePost}"></span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Tình trạng</h4>
+                                                <span th:utext="${room.status}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div><!-- End carousel item -->
+                </th:block>
             </div>
         </div>
-        <div class="news-carousel-pagination carousel-pagination"></div>
     </div>
-</section><!-- End Latest News Section -->
-
-</div>
-</div>
-</div>
-</section><!-- End Property Single-->
-
+</section>
+</section><!-- End Property Grid Single-->
 </main><!-- End #main -->
 <div th:insert="footer :: footer"></div>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+</script>
 </body>
 </html>

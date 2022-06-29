@@ -1,11 +1,14 @@
 package com.example.chuyendeweb.controller;
 
+import com.example.chuyendeweb.DTO.rentPost.ListRentPost;
 import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
 import com.example.chuyendeweb.DTO.rentPost.RentPostWriteDTO;
 import com.example.chuyendeweb.DTO.user.UserDTO;
 import com.example.chuyendeweb.entities.*;
 import com.example.chuyendeweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +39,8 @@ public class HomeController {
     RoomTypeService roomTypeService;
     @Autowired
     RentPostService rentPostService;
-
-
-
+    @Value("${numberInPage}")
+    int numberInPage ;
     @GetMapping(value="/roomtypes",produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
@@ -61,8 +63,13 @@ public class HomeController {
 
     @GetMapping(value = {"/","home",""} )
     public String home(Model model){
-        List<RentPostReadDTO> list = rentPostService.sortByTimePostAsc();
-        model.addAttribute("listRoom",list);
+        List<RentPostReadDTO> list = rentPostService.sortByTimePostDesc(PageRequest.of(0,numberInPage));
+        int totalPage = 0 ;
+        if(rentPostService.count()%numberInPage!=0)
+            totalPage = rentPostService.count()/numberInPage +1;
+        else totalPage = rentPostService.count()/numberInPage ;
+        ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
+        model.addAttribute("listRoom",listRentPost);
         return "trangchu";
     }
 
@@ -84,6 +91,25 @@ public class HomeController {
         }
         return "redirect:home";
     }
-
+    @PostMapping("posts/{page}/{filter}")
+    @ResponseBody
+    public List<RentPostReadDTO> redictPage(@PathVariable("page") int page ,@PathVariable("filter") int fitter) {
+       List<RentPostReadDTO> list = new ArrayList<>();
+        switch (fitter) {
+            case 1 :
+              list = rentPostService.sortByPriceAsc(PageRequest.of(page-1,numberInPage));
+                break;
+            case 2 :
+                list = rentPostService.sortByPriceDesc(PageRequest.of(page-1,numberInPage));
+                break;
+            case 3 :
+                list =rentPostService.searchByStatus("còn",PageRequest.of(page-1,numberInPage));
+                break;
+            case 0 :
+                list = rentPostService.sortByTimePostDesc(PageRequest.of(page-1,numberInPage));
+                break;
+        }
+        return list;
+    }
 
 }

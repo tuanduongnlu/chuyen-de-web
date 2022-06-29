@@ -1,16 +1,12 @@
 package com.example.chuyendeweb.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +38,7 @@ public class RentPost implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     @JsonManagedReference
-    location location;
+    Location location;
     @ManyToOne
     @JoinColumn(name="user_id")
     @EqualsAndHashCode.Exclude
