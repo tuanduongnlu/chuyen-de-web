@@ -111,5 +111,12 @@ public class HomeController {
         }
         return list;
     }
+    @GetMapping("/management")
+    public String management(Model model) {
+        String phone = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<RentPostReadDTO> list = rentPostService.findByUser(userService.findByPhone(phone));
+        model.addAttribute("list",list);
+        return "postManagement";
+    }
 
 }

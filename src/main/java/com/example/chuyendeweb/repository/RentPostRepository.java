@@ -1,6 +1,7 @@
 package com.example.chuyendeweb.repository;
 
 import com.example.chuyendeweb.entities.RentPost;
+import com.example.chuyendeweb.entities.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
     RentPost findById(int id);
+    List<RentPost> findAllByUser(User user);
     List<RentPost> findAllByPriceBetween(int startPrice,int endPrice);
     List<RentPost> findAllByRoomType_idOrderByTimePostDesc (long RoomType_id);
     List<RentPost> findAllByOrderByPriceAsc(Pageable pageable);

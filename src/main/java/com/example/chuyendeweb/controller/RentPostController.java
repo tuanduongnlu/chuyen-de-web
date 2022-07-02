@@ -11,7 +11,9 @@ import com.example.chuyendeweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,31 +39,31 @@ public class RentPostController {
     UserService userService;
     @Value("${numberInPage}")
             int numberInPage ;
-    @GetMapping(value = "/rentPosts")
+    @DeleteMapping(value = "/delete/{id}")
     @ResponseBody
-    public List<RentPost> getAll() {
-        return RentPostService.rentPosts();
-    }
-
-    @PostMapping(value = "/rentPosts")
-    @ResponseBody
-    public void create(@RequestBody RentPost rentPost) {
-        RentPostService.saveOrUpdate(rentPost);
-    }
-
-    @DeleteMapping(value = "/rentPosts/{id}")
-    @ResponseBody
-    public void delete(@PathVariable("id") int id) {
+    public ResponseEntity<String> delete(@PathVariable("id") int id) {
         RentPostService.delete(id);
+        return new ResponseEntity(id, HttpStatus.OK) ;
+    }
+    @GetMapping (value = "/status/{id}")
+    @ResponseBody
+    public ResponseEntity<String> updateStatus(@PathVariable("id") int id) {
+        RentPostReadDTO rentPost = RentPostService.getById(id);
+        if(rentPost.getStatus()=="còn") {
+            RentPost rent = RentPostService.findById(id);
+            rent.setStatus("hết phòng");
+            RentPostService.saveOrUpdate(rent);
+            return new ResponseEntity(id,HttpStatus.OK) ;
+        }
+        else {
+            RentPost rent = RentPostService.findById(id);
+            rent.setStatus("còn");
+            RentPostService.saveOrUpdate(rent);
+            return new ResponseEntity(id,HttpStatus.OK) ;
+        }
     }
 
-    @RequestMapping(value = "/rentPosts/{id}", method = {RequestMethod.GET, RequestMethod.POST}
-            , produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
-    @ResponseBody
-    public RentPost getRentPost(@PathVariable("id") long id) {
-        return RentPostService.searchByUserId(id);
-    }
+
 
     @GetMapping(value = "/posts/listPricesDesc", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
@@ -205,8 +207,8 @@ public class RentPostController {
         rentPost.setRoomType(roomTypeService.getById(writeDTO.getRoomType()));
         Location location = new Location(0,districService.findById(distric_id),wardService.findById(ward_id),street,rentPost);
         rentPost.setLocation(location);
-        final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        rentPost.setUser(userService.getByName(currentUserName));
+        final String phone= SecurityContextHolder.getContext().getAuthentication().getName();
+        rentPost.setUser(userService.findByPhone(phone));
         List<Image> imagesRentPost = new ArrayList<>();
         for (MultipartFile file : writeDTO.getImages()) {
             try {

@@ -2,6 +2,7 @@ package com.example.chuyendeweb.service;
 
 import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
 import com.example.chuyendeweb.entities.RentPost;
+import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.repository.RentPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,17 @@ public class RentPostService {
         return readDTO ;
     }
     public RentPost findById(int id ){
-        return repository.getById(id);
+        return repository.findById(id);
     }
+
+    public List<RentPostReadDTO> findByUser(User user) {
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.findAllByUser(user)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
+    }
+
     //tim kiem theo loai phong ,co sap xep ngay dang
     public List<RentPostReadDTO> searchByTypeRoom(Long idRoom){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
