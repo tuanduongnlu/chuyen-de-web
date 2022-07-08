@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="admin/headerAdmin :: head">
+
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:replace="admin/headerAdmin :: header"></div>
+<section class="section-news section-t8">
+    <section class="section-news section-t8">
+        <div class="container">
+
+            <!-- Tab panes -->
+<!--            <div class="tab-content">-->
+<!--                <div id="home" class="container tab-pane active"><br>-->
+<!--                    <h3>Danh sách bài đăng</h3>-->
+<!--                    <table class="table table-hover ">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>STT</th>-->
+<!--                            <th>Name user</th>-->
+<!--                            <th>email</th>-->
+<!--                            <th>Địa chỉ</th>-->
+<!--                            <th>Tình trạng</th>-->
+<!--                            <th>Ngày đăng</th>-->
+<!--                            <th>Tác vụ</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr th:each="room, state : ${list}" th:class="${room.id}">-->
+<!--                            <td><a th:href="@{'/posts/' + ${room.id}}" th:text="${state.count}"></a></td>-->
+<!--                            <td th:text="${room.roomType.name}"></td>-->
+<!--                            <td th:text="${room.price}"></td>-->
+<!--                            <td th:utext="${room.location.distric}+ ' ,' +${room.location.ward} +', ' +${room.location.detail} "></td>-->
+<!--                            <td th:utext="${room.status}"></td>-->
+<!--                            <td th:utext="${room.timePost}"></td>-->
+<!--                            <td>-->
+<!--                                <button type="button" class="btn btn-danger" th:onclick="'deleteRoom('+${room.id}+')'">Xóa-->
+<!--                                </button>-->
+<!--                                <a class="btn btn-success" th:href="@{'/posts/' + ${room.id}}">Chi tiết</a>-->
+<!--                                <button th:if="${room.status}=='còn'" type="button" class="btn btn-primary" th:onclick="'updateStatus('+${room.id}+')'">Đã cho-->
+<!--                                    thuê-->
+<!--                                </button>-->
+<!--                                <button th:if="${room.status}!='còn'" type="button" class="btn btn-primary" th:onclick="'updateStatus('+${room.id}+')'">Cho thuê-->
+<!--                                </button>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div id="menu1" class="container tab-pane fade"><br>-->
+<!--                    <h3>Menu 1</h3>-->
+<!--                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo-->
+<!--                        consequat.</p>-->
+<!--                </div>-->
+
+<!--            </div>-->
+        </div>
+    </section>
+    </section>
+    <div th:insert="footer :: footer"></div>
+    <script>
+    function deleteRoom(id) {
+        fetch('http://localhost:8080/posts/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(res =>res.text())
+            .then(res =>{
+                $('.'+ res).remove();
+            })
+    }
+    function updateStatus(id){
+        fetch('http://localhost:8080/status/' + id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(res =>res.text())
+            .then(res =>{
+                console.log(res);
+            })
+        // window.location.href = "http://localhost:8080/management"
+    }
+</script>
+</body>
+</html>
