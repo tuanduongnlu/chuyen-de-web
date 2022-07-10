@@ -16,10 +16,14 @@ function checkPw(){
     const cfPassword =document.querySelector(".cf_password");
     const password = document.querySelector(".password");
     cfPassword.onchange
-    if(cfPassword.value!=password.value)
+    if(cfPassword.value!=password.value) {
         document.querySelector(".message_pw").innerHTML = "xác thực sai"
-    if(cfPassword.value==password.value)
+        $(".register").hide()
+    }
+    if(cfPassword.value==password.value) {
         document.querySelector(".message_pw").innerHTML = ""
+        $(".register").show()
+    }
 }
 const loginText = document.querySelector(".title-text .login");
 const loginForm = document.querySelector("form.login");

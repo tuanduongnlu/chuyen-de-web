@@ -40,18 +40,18 @@ public class HomeController {
     @Autowired
     RentPostService rentPostService;
     @Value("${numberInPage}")
-    int numberInPage ;
-    @GetMapping(value="/roomtypes",produces = {MediaType.APPLICATION_JSON_VALUE,
+    int numberInPage;
+
+    @GetMapping(value = "/roomtypes", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
-    public List<RoomType> roomTypes (){
+    public List<RoomType> roomTypes() {
         return roomTypeService.roomTypes();
     }
 
     @GetMapping("/wards/{id}")
     @ResponseBody
-    public List<Ward> wards(@PathVariable int id)
-    {
+    public List<Ward> wards(@PathVariable int id) {
         return wardService.getWardsByDictric_id(id);
     }
 
@@ -61,28 +61,28 @@ public class HomeController {
         return districService.districs();
     }
 
-    @GetMapping(value = {"/","home",""} )
-    public String home(Model model){
-        List<RentPostReadDTO> list = rentPostService.sortByTimePostDesc(PageRequest.of(0,numberInPage));
-        int totalPage = 0 ;
-        if(rentPostService.count()%numberInPage!=0)
-            totalPage = rentPostService.count()/numberInPage +1;
-        else totalPage = rentPostService.count()/numberInPage ;
-        ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
-        model.addAttribute("listRoom",listRentPost);
+    @GetMapping(value = {"/", "home", ""})
+    public String home(Model model) {
+        List<RentPostReadDTO> list = rentPostService.sortByTimePostDesc(PageRequest.of(0, numberInPage));
+        int totalPage = 0;
+        if (rentPostService.count() % numberInPage != 0)
+            totalPage = rentPostService.count() / numberInPage + 1;
+        else totalPage = rentPostService.count() / numberInPage;
+        ListRentPost listRentPost = new ListRentPost(list, totalPage, 0);
+        model.addAttribute("listRoom", listRentPost);
         return "trangchu";
     }
 
     @GetMapping("/login")
-    public String getPageLogin (Model model, String error, String logout) {
+    public String getPageLogin(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("error", "tài khoảng hoặc mật khẩu không đúng");
         return "login";
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String name,@RequestParam String phone,@RequestParam String email,@RequestParam String password, HttpServletRequest request) {
-        UserDTO userDTO= new UserDTO(name,phone,email,password);
+    public String register(@RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String password, HttpServletRequest request) {
+        UserDTO userDTO = new UserDTO(name, phone, email, password);
         User user = userDTO.transUser();
         userService.saveOrUpdate(user);
         try {
@@ -91,31 +91,51 @@ public class HomeController {
         }
         return "redirect:home";
     }
-    @PostMapping("posts/{page}/{filter}")
+
+    @PostMapping("posts/{page}/{filter}/{type}")
     @ResponseBody
-    public List<RentPostReadDTO> redictPage(@PathVariable("page") int page ,@PathVariable("filter") int fitter) {
-       List<RentPostReadDTO> list = new ArrayList<>();
-        switch (fitter) {
-            case 1 :
-              list = rentPostService.sortByPriceAsc(PageRequest.of(page-1,numberInPage));
-                break;
-            case 2 :
-                list = rentPostService.sortByPriceDesc(PageRequest.of(page-1,numberInPage));
-                break;
-            case 3 :
-                list =rentPostService.searchByStatus("còn",PageRequest.of(page-1,numberInPage));
-                break;
-            case 0 :
-                list = rentPostService.sortByTimePostDesc(PageRequest.of(page-1,numberInPage));
-                break;
+    public List<RentPostReadDTO> redictPage(@PathVariable("page") int page, @PathVariable("filter") int fitter,
+                                            @PathVariable("type") int type) {
+        List<RentPostReadDTO> list = new ArrayList<>();
+        if (type == 0) {
+            switch (fitter) {
+                case 1:
+                    list = rentPostService.sortByPriceAsc(PageRequest.of(page - 1, numberInPage));
+                    break;
+                case 2:
+                    list = rentPostService.sortByPriceDesc(PageRequest.of(page - 1, numberInPage));
+                    break;
+                case 3:
+                    list = rentPostService.searchByStatus("còn", PageRequest.of(page - 1, numberInPage));
+                    break;
+                case 0:
+                    list = rentPostService.sortByTimePostDesc(PageRequest.of(page - 1, numberInPage));
+                    break;
+            }
+        } else {
+            switch (fitter) {
+                case 1:
+                    list = rentPostService.listWithTypeRoomSortByPriceAsc(type,PageRequest.of(page - 1, numberInPage));
+                    break;
+                case 2:
+                    list = rentPostService.listWithTypeRoomSortByPriceDesc(type,PageRequest.of(page - 1, numberInPage));
+                    break;
+                case 3:
+                    list = rentPostService.listWithTypeRoomAndStatus(type,"còn", PageRequest.of(page - 1, numberInPage));
+                    break;
+                case 0:
+                    list = rentPostService.searchByTypeRoom(type,PageRequest.of(page - 1, numberInPage));
+                    break;
+            }
         }
         return list;
     }
+
     @GetMapping("/management")
     public String management(Model model) {
         String phone = SecurityContextHolder.getContext().getAuthentication().getName();
         List<RentPostReadDTO> list = rentPostService.findByUser(userService.findByPhone(phone));
-        model.addAttribute("list",list);
+        model.addAttribute("list", list);
         return "postManagement";
     }
 

@@ -48,3 +48,13 @@ function getwardPost() {
             }
         )
 }
+
+$("#file").change(function () {
+    var fi = document.getElementById('file');
+    if (fi.files.length > 1) {
+        $("#fp").remove();
+        for (var i = 0; i <= fi.files.length - 1; i++)
+            $("#show-name-image").append("<p id=\"fp\">" + fi.files.item(i).name + '</p>')
+    } else $("#fp").remove();
+
+})

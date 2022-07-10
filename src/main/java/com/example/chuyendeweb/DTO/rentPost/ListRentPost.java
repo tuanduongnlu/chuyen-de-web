@@ -12,5 +12,5 @@ import java.util.List;
 public class ListRentPost {
     private List<RentPostReadDTO> list ;
     private int totalPage ;
-    private int currentPage ;
+    private int type ;
 }

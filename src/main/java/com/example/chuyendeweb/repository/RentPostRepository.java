@@ -13,7 +13,11 @@ public interface RentPostRepository extends JpaRepository<RentPost,Integer> {
     RentPost findById(int id);
     List<RentPost> findAllByUser(User user);
     List<RentPost> findAllByPriceBetween(int startPrice,int endPrice);
-    List<RentPost> findAllByRoomType_idOrderByTimePostDesc (long RoomType_id);
+    List<RentPost> findAllByRoomType_idOrderByTimePostDesc (int RoomType_id,Pageable pageable);
+    List<RentPost> findAllByRoomType_idOrderByPriceAsc (int RoomType_id,Pageable pageable);
+    List<RentPost> findAllByRoomType_idOrderByPriceDesc (int RoomType_id,Pageable pageable);
+    List<RentPost> findAllByRoomType_idAndStatusOrderByTimePostDesc (int RoomType_id,String status,Pageable pageable);
+    List<RentPost> findAllByRoomType_idOrderByTimePostDesc (int RoomType_id);
     List<RentPost> findAllByOrderByPriceAsc(Pageable pageable);
     List<RentPost> findAllByOrderByPriceDesc(Pageable pageable);
     List<RentPost> findAllByOrderByTimePostAsc(Pageable pageable);

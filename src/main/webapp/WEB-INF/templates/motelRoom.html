@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="header :: head">
+</head>
+<body>
+<div th:insert="header :: header"></div>
+<section class="section-news section-t8">
+        <section class="property-grid grid">
+            <div class="container">
+                <div class="row">
+                    <div class="title-box">
+                        <h2 class="title-a">Danh sách tin đăng</h2>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="grid-option">
+                            <form>
+                                <select class="custom-select" id="filter" onchange="filterRoom()">
+                                    <option selected value="0"  >Mặc định</option>
+                                    <option value="1">Giá tăng dần</option>
+                                    <option value="2">Giá giảm dần</option>
+                                    <option value="3">Phòng chưa thuê</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="list-room row">
+                        <p th:if="${listRoom.list.size}==0">Không tìm thấy kết quả nào phù hợp  </p>
+                        <th:block  th:each="room : ${listRoom.list}">
+                            <div class="col-md-4 room" id="room">
+                                <div class="card-box-a card-shadow">
+                                    <div class="img-box-a">
+                                        <img th:if="${room.images.size == 0}" src="/images/noimage.png"  class="img-a img-fluid">
+                                        <img th:if="${room.images.size != 0}" th:src="${room.images[0].link}" alt="" class="img-a img-fluid">
+                                    </div>
+                                    <div class="card-overlay">
+                                        <div class="card-overlay-a-content">
+                                            <div class="card-header-a">
+                                                <h2 class="card-title-a">
+                                                    <a href="#" th:utext="${room.location.distric}">
+                                                    </a> <br/>
+                                                    <a th:utext="${room.location.ward}"></a>
+                                                </h2>
+                                            </div>
+                                            <div class="card-body-a">
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a" th:utext="'Giá | '+ ${room.price} + ' VND'"></span>
+                                                </div>
+                                                <a th:href="@{'/posts/' + ${room.id}}" class="link-a">Click để xem chi tiết
+                                                    <span class="bi bi-chevron-right"></span>
+                                                </a>
+                                            </div>
+                                            <div class="card-footer-a">
+                                                <ul class="card-info d-flex justify-content-around">
+                                                    <li>
+                                                        <h4 class="card-info-title">Diện tích</h4>
+                                                        <span th:text="${room.acreage} +'m'" >
+
+                        </span><sup>2</sup>
+                                                    </li>
+                                                    <li>
+                                                        <h4 class="card-info-title">Loại phòng</h4>
+                                                        <span  th:utext="${room.roomType.name}"></span>
+                                                    </li>
+                                                    <li>
+                                                        <h4 class="card-info-title">Ngày đăng</h4>
+                                                        <span th:utext="${room.timePost}"></span>
+                                                    </li>
+                                                    <li>
+                                                        <h4 class="card-info-title">Tình trạng</h4>
+                                                        <span th:utext="${room.status}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <nav class="pagination-a" id="pagination">
+                                <ul class="pagination justify-content-end">
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End Property Grid Single-->
+</section>
+<div th:insert="footer :: footer"></div>
+<script src="/js/home.js"> </script>
+<script>
+    $(".motel-room").addClass("active")
+    var totalpage = [[${listRoom.totalPage}]]
+    var roomType = [[${listRoom.type}]]
+</script>
+</body>
+</html>

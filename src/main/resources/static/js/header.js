@@ -12,8 +12,11 @@ $(".endPrice").blur(function () {
         $(".endPrice").val(start)
     }
 })
-$(".btn-dangbai").click(function () {
+$(".btn-chothue").click(function () {
     window.location.href = "http://localhost:8080/post";
+})
+$(".btn-timtro").click(function () {
+    window.location.href = "http://localhost:8080/postFindRoom";
 })
 $(".btn-login").click(function () {
     window.location.href = "http://localhost:8080/login";

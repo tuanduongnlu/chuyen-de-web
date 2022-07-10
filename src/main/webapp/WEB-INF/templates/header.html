@@ -7,7 +7,6 @@
     <title>phongtromoi</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/animate.css/animate.min.css" th:href="@{/assets/vendor/animate.css/animate.min.css}" rel="stylesheet">
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
@@ -108,20 +107,19 @@
             <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Tìm trọ</a>
+                        <a class="nav-link home" href="/">Tìm trọ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="property-grid.html">Cho thuê</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link " href="blog-grid.html">Chung cư</a>
+                        <a class="nav-link find-room" href="/postFindRoom">Cho thuê</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="contact.html">Phòng trọ</a>
+                        <a class="nav-link apartment" href="/posts/apartment">Chung cư</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="contact.html">Nhà nguyên căn</a>
+                        <a class="nav-link motel-room" href="/posts/motelRoom">Phòng trọ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link full-house" href="/posts/fullHouse">Nhà nguyên căn</a>
                     </li>
                 </ul>
             </div>
@@ -139,19 +137,32 @@
                         <a href="/logout">Thoát</a>
                     </div>
                 </div>
-                <button class="btn-dangbai">Đăng bài</button>
+                <button class="btn-dangbai" data-toggle="modal" data-target="#exampleModal">Đăng bài</button>
             </div>
             <button  th:unless="${#httpServletRequest.remoteUser}" class="btn-login">Đăng nhập</button>
             <button  th:unless="${#httpServletRequest.remoteUser}" class="btn-register">Đăng kí</button>
         </div>
 
     </nav><!-- End Header/Navbar -->
-    <!-- Vendor JS Files -->
-    <script src="assets/vendor/php-email-form/validate.js" th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="/assets/js/main.js" th:src="@{/assets/js/main.js}"></script>
-    <script src="/assets/js/jquery.simplePagination.js" th:src="@{/assets/js/jquery.simplePagination.js}"></script>
-    <script src="/js/header.js"> </script>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chọn loại bài đăng :</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-chothue btn-primary" >Cho thuê</button>
+                    <button type="button" class="btn btn-timtro btn-primary">Tìm trọ</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

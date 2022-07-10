@@ -47,10 +47,37 @@ public class RentPostService {
         return rentPostReadDTOS;
     }
 
-    //tim kiem theo loai phong ,co sap xep ngay dang
-    public List<RentPostReadDTO> searchByTypeRoom(Long idRoom){
+    //tim kiem theo loai phong
+    public List<RentPostReadDTO> searchByTypeRoom(int idRoom,Pageable pageable){
         List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
-        for (RentPost e:repository.findAllByRoomType_idOrderByTimePostDesc(idRoom)) {
+        for (RentPost e:repository.findAllByRoomType_idOrderByTimePostDesc(idRoom,pageable)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
+    }
+    public int totalListSearhByTypeRoom(int idRoom) {
+        return repository.findAllByRoomType_idOrderByTimePostDesc(idRoom).size();
+    }
+
+    public List<RentPostReadDTO> listWithTypeRoomSortByPriceDesc(int idRoom,Pageable pageable){
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.findAllByRoomType_idOrderByPriceDesc(idRoom,pageable)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
+    }
+
+    public List<RentPostReadDTO> listWithTypeRoomSortByPriceAsc(int idRoom,Pageable pageable){
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.findAllByRoomType_idOrderByPriceAsc(idRoom,pageable)) {
+            rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
+        }
+        return rentPostReadDTOS;
+    }
+
+    public List<RentPostReadDTO> listWithTypeRoomAndStatus(int idRoom,String status,Pageable pageable){
+        List<RentPostReadDTO> rentPostReadDTOS = new ArrayList<>();
+        for (RentPost e:repository.findAllByRoomType_idAndStatusOrderByTimePostDesc(idRoom,status,pageable)) {
             rentPostReadDTOS.add(RentPostReadDTO.transtoDTO(e));
         }
         return rentPostReadDTOS;

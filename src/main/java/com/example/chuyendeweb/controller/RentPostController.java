@@ -38,59 +38,115 @@ public class RentPostController {
     @Autowired
     UserService userService;
     @Value("${numberInPage}")
-            int numberInPage ;
+    int numberInPage;
+
+    @GetMapping(value = {"/post/{x}"})
+    public String postDetail() {
+        return "rentPost";
+    }
+
+    @GetMapping("/postFindRoom")
+    public String getPostSeachRoomPage(Model model) {
+        return "findRoom";
+    }
+
+    @GetMapping("/posts/motelRoom")
+    public String getPostMotelRoomPage(Model model) {
+        List<RentPostReadDTO> list = RentPostService.searchByTypeRoom(1,PageRequest.of(0,numberInPage));
+        int totalPage = 0 ;
+        int count = RentPostService.totalListSearhByTypeRoom(1);
+        if(count%numberInPage!=0)
+            totalPage = count/numberInPage +1;
+        else totalPage = count/numberInPage ;
+        ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
+        model.addAttribute("listRoom",listRentPost);
+        return "motelRoom";
+    }
+
+    @GetMapping("/posts/fullHouse")
+    public String getPostFullHousePage(Model model) {
+        List<RentPostReadDTO> list = RentPostService.searchByTypeRoom(2,PageRequest.of(0,numberInPage));
+        int totalPage = 0 ;
+        int count = RentPostService.totalListSearhByTypeRoom(2);
+        if(count%numberInPage!=0)
+            totalPage = count/numberInPage +1;
+        else totalPage = count/numberInPage ;
+        ListRentPost listRentPost = new ListRentPost(list,totalPage,2);
+        model.addAttribute("listRoom",listRentPost);
+        return "fullHouse";
+    }
+
+    @GetMapping("/posts/apartment")
+    public String getPostApartmentPage(Model model) {
+        List<RentPostReadDTO> list = RentPostService.searchByTypeRoom(3,PageRequest.of(0,numberInPage));
+        int totalPage = 0 ;
+        int count = RentPostService.totalListSearhByTypeRoom(3);
+        if(count%numberInPage!=0)
+            totalPage = count/numberInPage +1;
+        else totalPage = count/numberInPage ;
+        ListRentPost listRentPost = new ListRentPost(list,totalPage,3);
+        model.addAttribute("listRoom",listRentPost);
+        return "apartment";
+    }
+
+    @GetMapping(value = "/post")
+    public String getPostPage(Model model) {
+        RentPostWriteDTO rentPost = new RentPostWriteDTO();
+        model.addAttribute("rentPost", rentPost);
+        return "rentPost";
+    }
+
     @DeleteMapping(value = "/delete/{id}")
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable("id") int id) {
         RentPostService.delete(id);
-        return new ResponseEntity(id, HttpStatus.OK) ;
+        return new ResponseEntity(id, HttpStatus.OK);
     }
-    @GetMapping (value = "/status/{id}")
+
+    @GetMapping(value = "/status/{id}")
     @ResponseBody
     public ResponseEntity<String> updateStatus(@PathVariable("id") int id) {
         RentPostReadDTO rentPost = RentPostService.getById(id);
-        if(rentPost.getStatus()=="còn") {
+        if (rentPost.getStatus() == "còn") {
             RentPost rent = RentPostService.findById(id);
             rent.setStatus("hết phòng");
             RentPostService.saveOrUpdate(rent);
-            return new ResponseEntity(id,HttpStatus.OK) ;
-        }
-        else {
+            return new ResponseEntity(id, HttpStatus.OK);
+        } else {
             RentPost rent = RentPostService.findById(id);
             rent.setStatus("còn");
             RentPostService.saveOrUpdate(rent);
-            return new ResponseEntity(id,HttpStatus.OK) ;
+            return new ResponseEntity(id, HttpStatus.OK);
         }
     }
-
 
 
     @GetMapping(value = "/posts/listPricesDesc", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public List<RentPostReadDTO> listPriceDesc() {
-        return RentPostService.sortByPriceDesc(PageRequest.of(0,numberInPage));
+        return RentPostService.sortByPriceDesc(PageRequest.of(0, numberInPage));
     }
 
     @GetMapping(value = "/posts/listPricesAsc", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public List<RentPostReadDTO> listPriceAsc() {
-        return RentPostService.sortByPriceAsc(PageRequest.of(0,numberInPage));
+        return RentPostService.sortByPriceAsc(PageRequest.of(0, numberInPage));
     }
 
     @GetMapping(value = "/posts/listTimePostDesc", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public List<RentPostReadDTO> listTimePostDesc() {
-        return RentPostService.sortByTimePostDesc(PageRequest.of(0,numberInPage));
+        return RentPostService.sortByTimePostDesc(PageRequest.of(0, numberInPage));
     }
 
     @GetMapping(value = "/posts/listTimePostAsc", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public List<RentPostReadDTO> listTimePostAsc() {
-        return RentPostService.sortByTimePostAsc(PageRequest.of(0,numberInPage));
+        return RentPostService.sortByTimePostAsc(PageRequest.of(0, numberInPage));
     }
 
     @RequestMapping(value = "/posts/listStatus", method = {RequestMethod.GET, RequestMethod.POST}
@@ -98,7 +154,7 @@ public class RentPostController {
             MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public List<RentPostReadDTO> listStatus() {
-        return RentPostService.searchByStatus("còn",PageRequest.of(0,numberInPage));
+        return RentPostService.searchByStatus("còn", PageRequest.of(0, numberInPage));
     }
 
 
@@ -112,52 +168,52 @@ public class RentPostController {
         if (endPrice == 0) endPrice = 100000000;
         if (type == 0 && ward == 0) {
             list = RentPostService.searchNotWardAndRoomType(distric, startPrice, endPrice, startArea, endArea);
-            int totalPage = 0 ;
-            if(list.size()%numberInPage!=0)
-                totalPage = list.size()/numberInPage +1;
-            else totalPage = list.size()/numberInPage ;
-            ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
-            model.addAttribute("listRoom",listRentPost);
+            int totalPage = 0;
+            if (list.size() % numberInPage != 0)
+                totalPage = list.size() / numberInPage + 1;
+            else totalPage = list.size() / numberInPage;
+            ListRentPost listRentPost = new ListRentPost(list, totalPage, 1);
+            model.addAttribute("listRoom", listRentPost);
             return "trangchu";
         }
         if (type == 0 && ward != 0) {
             list = RentPostService.searchNotRoomtype(distric, ward, startPrice, endPrice, startArea, endArea);
-            int totalPage = 0 ;
-            if(list.size()%numberInPage!=0)
-                totalPage = list.size()/numberInPage +1;
-            else totalPage = list.size()/numberInPage ;
-            ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
-            model.addAttribute("listRoom",listRentPost);
+            int totalPage = 0;
+            if (list.size() % numberInPage != 0)
+                totalPage = list.size() / numberInPage + 1;
+            else totalPage = list.size() / numberInPage;
+            ListRentPost listRentPost = new ListRentPost(list, totalPage, 1);
+            model.addAttribute("listRoom", listRentPost);
             return "trangchu";
         }
         if (type > 0 && distric == 0) {
             list = RentPostService.searchNotLocation(type, startPrice, endPrice, startArea, endArea);
-            int totalPage = 0 ;
-            if(list.size()%numberInPage!=0)
-                totalPage = list.size()/numberInPage +1;
-            else totalPage = list.size()/numberInPage ;
-            ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
-            model.addAttribute("listRoom",listRentPost);
+            int totalPage = 0;
+            if (list.size() % numberInPage != 0)
+                totalPage = list.size() / numberInPage + 1;
+            else totalPage = list.size() / numberInPage;
+            ListRentPost listRentPost = new ListRentPost(list, totalPage, 1);
+            model.addAttribute("listRoom", listRentPost);
             return "trangchu";
         }
-        if (type > 0 && ward == 0 && distric>0) {
+        if (type > 0 && ward == 0 && distric > 0) {
             list = RentPostService.searchNotWard(distric, type, startPrice, endPrice, startArea, endArea);
-            int totalPage = 0 ;
-            if(list.size()%numberInPage!=0)
-                totalPage = list.size()/numberInPage +1;
-            else totalPage = list.size()/numberInPage ;
-            ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
-            model.addAttribute("listRoom",listRentPost);
+            int totalPage = 0;
+            if (list.size() % numberInPage != 0)
+                totalPage = list.size() / numberInPage + 1;
+            else totalPage = list.size() / numberInPage;
+            ListRentPost listRentPost = new ListRentPost(list, totalPage, 1);
+            model.addAttribute("listRoom", listRentPost);
             return "trangchu";
         }
 
         list = RentPostService.search(distric, ward, type, startPrice, endPrice, startArea, endArea);
-        int totalPage = 0 ;
-        if(list.size()%numberInPage!=0)
-            totalPage = list.size()/numberInPage +1;
-        else totalPage = list.size()/numberInPage ;
-        ListRentPost listRentPost = new ListRentPost(list,totalPage,1);
-        model.addAttribute("listRoom",listRentPost);
+        int totalPage = 0;
+        if (list.size() % numberInPage != 0)
+            totalPage = list.size() / numberInPage + 1;
+        else totalPage = list.size() / numberInPage;
+        ListRentPost listRentPost = new ListRentPost(list, totalPage, 0);
+        model.addAttribute("listRoom", listRentPost);
         return "trangchu";
     }
 
@@ -165,49 +221,37 @@ public class RentPostController {
     public String listTypeRoom(@PathVariable("id") int id, Model model) {
         RentPostReadDTO rentPost = RentPostService.getById(id);
         RentPost rent = RentPostService.findById(id);
-        List<RentPostReadDTO> list = RentPostService.roomTuongTu(rent.getLocation().getDistric().getId(),rent.getRoomType().getId());
-        for (int i= 0;i<list.size();i++) {
-           if(list.get(i).getId()==id)
-               list.remove(i);
+        List<RentPostReadDTO> list = RentPostService.roomTuongTu(rent.getLocation().getDistric().getId(), rent.getRoomType().getId());
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() == id)
+                list.remove(i);
         }
-        if(list.size()>3) {
-            List<RentPostReadDTO> list1= new ArrayList<>();
-            for (int i= 0;i<3;i++) {
-               list1.add(list.get(i));
+        if (list.size() > 3) {
+            List<RentPostReadDTO> list1 = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                list1.add(list.get(i));
             }
-            model.addAttribute("list1",list);
+            model.addAttribute("list1", list);
             model.addAttribute("room", rentPost);
             return "RoomDetail";
         }
-        model.addAttribute("list",list);
+        model.addAttribute("list", list);
         model.addAttribute("room", rentPost);
         return "RoomDetail";
     }
 
-    @GetMapping(value = {"/post/{x}"})
-    public String postDetail() {
-        return "rentPost";
-    }
-
-    @GetMapping(value = "/post")
-    public String getPostPage(Model model) {
-        RentPostWriteDTO rentPost = new RentPostWriteDTO();
-        model.addAttribute("rentPost", rentPost);
-        return "rentPost";
-    }
-
     @PostMapping(value = "/post")
-    public String post(@RequestParam("roomType") int roomType,@RequestParam("images") MultipartFile[] images,
-                       @RequestParam("title") String title,@RequestParam("detail") String detail,
-                       @RequestParam("price") int price,@RequestParam("acreage") double acreage,
-                       @RequestParam("distric_id") int distric_id,@RequestParam("ward_id") int ward_id,
-                       @RequestParam("street") String street,@RequestParam("sex") String sex,Model model) {
-        RentPostWriteDTO writeDTO = new RentPostWriteDTO(roomType,images,title,detail,price,acreage,distric_id,ward_id,street,sex);
+    public String post(@RequestParam("roomType") int roomType, @RequestParam("images") MultipartFile[] images,
+                       @RequestParam("title") String title, @RequestParam("detail") String detail,
+                       @RequestParam("price") int price, @RequestParam("acreage") double acreage,
+                       @RequestParam("distric_id") int distric_id, @RequestParam("ward_id") int ward_id,
+                       @RequestParam("street") String street, @RequestParam("sex") String sex) {
+        RentPostWriteDTO writeDTO = new RentPostWriteDTO(roomType, images, title, detail, price, acreage, distric_id, ward_id, street, sex);
         RentPost rentPost = RentPostWriteDTO.trantToRentpost(writeDTO);
         rentPost.setRoomType(roomTypeService.getById(writeDTO.getRoomType()));
-        Location location = new Location(0,districService.findById(distric_id),wardService.findById(ward_id),street,rentPost);
+        Location location = new Location(0, districService.findById(distric_id), wardService.findById(ward_id), street, rentPost);
         rentPost.setLocation(location);
-        final String phone= SecurityContextHolder.getContext().getAuthentication().getName();
+        final String phone = SecurityContextHolder.getContext().getAuthentication().getName();
         rentPost.setUser(userService.findByPhone(phone));
         List<Image> imagesRentPost = new ArrayList<>();
         for (MultipartFile file : writeDTO.getImages()) {
@@ -220,7 +264,9 @@ public class RentPostController {
         }
         rentPost.setImages(imagesRentPost);
         RentPostService.saveOrUpdate(rentPost);
-
         return "redirect:home";
     }
+
+
+
 }

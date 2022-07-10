@@ -8,7 +8,6 @@
 <body>
 <div th:insert="header :: header"></div>
 <main id="main">
-
     <!-- ======= Latest News Section ======= -->
     <section class="section-news section-t8">
         <!-- ======= Property Grid ======= -->
@@ -36,7 +35,8 @@
                     <div class="col-md-4 room" id="room">
                         <div class="card-box-a card-shadow">
                             <div class="img-box-a">
-                                <img th:src="@{${room.images[0].link}}" alt="" class="img-a img-fluid">
+                                    <img th:if="${room.images.size == 0}" src="/images/noimage.png"  class="img-a img-fluid">
+                                <img th:if="${room.images.size != 0}" th:src="${room.images[0].link}" alt="" class="img-a img-fluid">
                             </div>
                             <div class="card-overlay">
                                 <div class="card-overlay-a-content">
@@ -82,7 +82,6 @@
                         </div>
                     </div>
                      </th:block>
-                        <input type="hidden" class="total-page" th:value="${listRoom.totalPage}">
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
@@ -98,6 +97,11 @@
     </section><!-- End Latest News Section -->
 </main><!-- End #main -->
 <div th:insert="footer :: footer"></div>
+<script>
+    $(".home").addClass("active")
+    var totalpage = [[${listRoom.totalPage}]]
+    var roomType = [[${listRoom.type}]]
+</script>
 <script src="/js/home.js"> </script>
 </body>
 </html>

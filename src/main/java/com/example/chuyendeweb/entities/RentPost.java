@@ -30,7 +30,7 @@ public class RentPost implements Serializable {
     String detail;
     int price;
     double acreage ;
-    @OneToMany(mappedBy = "rentpost", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rentpost", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JsonBackReference
     List<Image> images;
     String sex ;
