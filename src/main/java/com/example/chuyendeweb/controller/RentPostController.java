@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +35,9 @@ public class RentPostController {
     @Autowired
     RoomTypeService roomTypeService;
     @Autowired
-    FilesStorageService storageService;
-    @Autowired
     UserService userService;
+    @Autowired
+    FileService fileService;
     @Value("${numberInPage}")
     int numberInPage;
 
@@ -245,7 +246,7 @@ public class RentPostController {
                        @RequestParam("title") String title, @RequestParam("detail") String detail,
                        @RequestParam("price") int price, @RequestParam("acreage") double acreage,
                        @RequestParam("distric_id") int distric_id, @RequestParam("ward_id") int ward_id,
-                       @RequestParam("street") String street, @RequestParam("sex") String sex) {
+                       @RequestParam("street") String street, @RequestParam("sex") String sex, HttpServletRequest req) throws Exception {
         RentPostWriteDTO writeDTO = new RentPostWriteDTO(roomType, images, title, detail, price, acreage, distric_id, ward_id, street, sex);
         RentPost rentPost = RentPostWriteDTO.trantToRentpost(writeDTO);
         rentPost.setRoomType(roomTypeService.getById(writeDTO.getRoomType()));
@@ -254,13 +255,10 @@ public class RentPostController {
         final String phone = SecurityContextHolder.getContext().getAuthentication().getName();
         rentPost.setUser(userService.findByPhone(phone));
         List<Image> imagesRentPost = new ArrayList<>();
-        for (MultipartFile file : writeDTO.getImages()) {
-            try {
-                storageService.save(file);
-                Image image = new Image(0, "/images/" + file.getOriginalFilename(), rentPost);
+        List<String> nameImage = fileService.upload(images,req);
+        for (String name : nameImage) {
+                Image image = new Image(0, "templates/images/" + name, rentPost);
                 imagesRentPost.add(image);
-            } catch (Exception e) {
-            }
         }
         rentPost.setImages(imagesRentPost);
         RentPostService.saveOrUpdate(rentPost);
