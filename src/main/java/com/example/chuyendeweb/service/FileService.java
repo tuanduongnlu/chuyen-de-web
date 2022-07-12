@@ -23,7 +23,7 @@ public class FileService {
             if (file.getSize() == 0 || file == null) {
                 throw new CustomException("Bạn chưa chọn file", HttpStatus.BAD_REQUEST);
             }
-            String uploadRootPath = req.getServletContext().getRealPath("templates/images");
+            String uploadRootPath = req.getServletContext().getRealPath("/templates/images");
             File dir = new File(uploadRootPath);
             if (!dir.exists())
                 dir.mkdirs();

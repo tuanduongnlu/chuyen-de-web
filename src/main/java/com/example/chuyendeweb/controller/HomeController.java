@@ -2,28 +2,22 @@ package com.example.chuyendeweb.controller;
 
 import com.example.chuyendeweb.DTO.rentPost.ListRentPost;
 import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
-import com.example.chuyendeweb.DTO.rentPost.RentPostWriteDTO;
-import com.example.chuyendeweb.DTO.user.UserDTO;
+import com.example.chuyendeweb.DTO.user.UserReadDTO;
+import com.example.chuyendeweb.DTO.user.UserWriteDTO;
 import com.example.chuyendeweb.entities.*;
 import com.example.chuyendeweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +33,8 @@ public class HomeController {
     RoomTypeService roomTypeService;
     @Autowired
     RentPostService rentPostService;
+    @Autowired
+    BCryptPasswordEncoder BCryptPasswordEncoder;
     @Value("${numberInPage}")
     int numberInPage;
 
@@ -82,9 +78,9 @@ public class HomeController {
 
     @PostMapping("/register")
     public String register(@RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String password, HttpServletRequest request) {
-        UserDTO userDTO = new UserDTO(name, phone, email, password);
-        User user = userDTO.transUser();
-        userService.saveOrUpdate(user);
+        UserWriteDTO userWriteDTO = new UserWriteDTO(name, phone, email, password);
+        User user = userWriteDTO.transUser();
+        userService.save(user);
         try {
             request.login(phone, password);
         } catch (ServletException e) {
@@ -138,5 +134,49 @@ public class HomeController {
         model.addAttribute("list", list);
         return "postManagement";
     }
+    @GetMapping("/detail-account")
+    public String detailAccount(Model model) {
+        String phone = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("user",UserReadDTO.transtoDTO( userService.findByPhone(phone)));
+        model.addAttribute("success","false");
+        return "detailAccount";
+    }
+    @PostMapping("/update-account")
+    public String updateAccount(@RequestParam("name") String name,@RequestParam("zalo") String zalo,
+                                @RequestParam("facebook") String facebook,@RequestParam("email") String email,Model model){
+        String phone = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user =userService.findByPhone(phone);
+        user.setEmail(email);
+        user.setName(name);
+        user.setFacebook(facebook);
+        user.setZalo(zalo);
+        userService.update(user);
+        model.addAttribute("user",UserReadDTO.transtoDTO(user));
+        model.addAttribute("success","true");
+        return "detailAccount";
+    }
+    @GetMapping("change-password")
+    public String getPageChangePassword(Model model){
+        model.addAttribute("success","false");
+        model.addAttribute("error",null);
+        return "changePassword";
+    }
 
+    @PostMapping("change-password")
+    public String changePassword(Model model,@RequestParam("old_password")String oldPassword,@RequestParam("password")
+                                 String password){
+        String phone = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user =userService.findByPhone(phone);
+        if(BCryptPasswordEncoder.matches(oldPassword,user.getPassword())){
+            user.setPassword(BCryptPasswordEncoder.encode(password));
+            userService.update(user);
+        }
+        else {
+            model.addAttribute("success","false");
+            model.addAttribute("error","Mật khẩu cũ không chính xác");
+            return "changePassword";
+        }
+        model.addAttribute("success","true");
+        return "changePassword";
+    }
 }

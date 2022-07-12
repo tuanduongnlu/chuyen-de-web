@@ -18,11 +18,13 @@ public class UserService {
        return userRepository.findAll();
     }
 
-    public void saveOrUpdate(User user){
+    public void save(User user){
         user.setPassword(BCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-
+    public void update(User user){
+        userRepository.save(user);
+    }
     public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
@@ -45,7 +47,7 @@ public class UserService {
         if(user.isState())
             user.setState(false);
         else user.setState(true);
-        saveOrUpdate(user);
+        update(user);
     }
     public String fogotPassword(String phone) {
         User user = userRepository.findByPhone(phone);

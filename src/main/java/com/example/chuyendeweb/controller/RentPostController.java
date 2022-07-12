@@ -48,7 +48,7 @@ public class RentPostController {
 
     @GetMapping("/postFindRoom")
     public String getPostSeachRoomPage(Model model) {
-        return "findRoom";
+        return "postFindRoom";
     }
 
     @GetMapping("/posts/motelRoom")
@@ -105,19 +105,18 @@ public class RentPostController {
     }
 
     @GetMapping(value = "/status/{id}")
-    @ResponseBody
-    public ResponseEntity<String> updateStatus(@PathVariable("id") int id) {
-        RentPostReadDTO rentPost = RentPostService.getById(id);
-        if (rentPost.getStatus() == "còn") {
-            RentPost rent = RentPostService.findById(id);
+    public String updateStatus(@PathVariable("id") int id) {
+        RentPostReadDTO readDTO = RentPostService.getById(id);
+        String status = readDTO.getStatus();
+        RentPost rent = RentPostService.findById(id);
+        if (status.equals("còn")) {
             rent.setStatus("hết phòng");
             RentPostService.saveOrUpdate(rent);
-            return new ResponseEntity(id, HttpStatus.OK);
+            return "redirect:/management";
         } else {
-            RentPost rent = RentPostService.findById(id);
             rent.setStatus("còn");
             RentPostService.saveOrUpdate(rent);
-            return new ResponseEntity(id, HttpStatus.OK);
+            return "redirect:/management";
         }
     }
 
@@ -167,6 +166,9 @@ public class RentPostController {
         List<RentPostReadDTO> list = new ArrayList<>();
         if (endArea == 0) endArea = 100000;
         if (endPrice == 0) endPrice = 100000000;
+        if(type==0 && distric==0){
+            return "redirect:/home";
+        }
         if (type == 0 && ward == 0) {
             list = RentPostService.searchNotWardAndRoomType(distric, startPrice, endPrice, startArea, endArea);
             int totalPage = 0;
@@ -257,7 +259,7 @@ public class RentPostController {
         List<Image> imagesRentPost = new ArrayList<>();
         List<String> nameImage = fileService.upload(images,req);
         for (String name : nameImage) {
-                Image image = new Image(0, "templates/images/" + name, rentPost);
+                Image image = new Image(0, "/templates/images/" + name, rentPost);
                 imagesRentPost.add(image);
         }
         rentPost.setImages(imagesRentPost);

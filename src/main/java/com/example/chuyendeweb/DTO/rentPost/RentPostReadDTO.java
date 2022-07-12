@@ -3,16 +3,14 @@ package com.example.chuyendeweb.DTO.rentPost;
 import com.example.chuyendeweb.DTO.ImageDTO;
 import com.example.chuyendeweb.DTO.LocationDTO;
 import com.example.chuyendeweb.DTO.RoomTypeDTO;
-import com.example.chuyendeweb.DTO.user.UserDTO;
+import com.example.chuyendeweb.DTO.user.UserWriteDTO;
 import com.example.chuyendeweb.entities.RentPost;
-import com.example.chuyendeweb.entities.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 @Data
 @NoArgsConstructor
@@ -29,7 +27,7 @@ public class RentPostReadDTO {
     LocationDTO location;
     String sex ;
     String status;
-    UserDTO user ;
+    UserWriteDTO user ;
 public static RentPostReadDTO transtoDTO(RentPost rentPost) {
   RentPostReadDTO readDTO = new RentPostReadDTO();
   readDTO.setId(rentPost.getId());
@@ -50,7 +48,7 @@ public static RentPostReadDTO transtoDTO(RentPost rentPost) {
   readDTO.setLocation(LocationDTO.trantoDTO(rentPost.getLocation()));
   readDTO.setSex(rentPost.getSex());
   readDTO.setStatus(rentPost.getStatus());
-  readDTO.setUser(UserDTO.transtoDTO(rentPost.getUser()));
+  readDTO.setUser(UserWriteDTO.transtoDTO(rentPost.getUser()));
   return readDTO;
 }
 }

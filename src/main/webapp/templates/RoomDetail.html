@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="header :: head">
 </head>
 <body>
@@ -29,8 +29,6 @@
                             </div>
                         </th:block>
                     </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
                 </div>
                 <div class="property-single-carousel-pagination carousel-pagination"></div>
             </div>
@@ -40,7 +38,7 @@
             <div class="col-sm-12">
 
                 <div class="row justify-content-between">
-                    <div class="col-md-5 col-lg-4">
+                    <div class="col-md-6 col-lg-5">
                         <div class=" d-flex justify-content-center foo">
                             <div class="card-title-c align-self-center">
                                 <h5 class="title-c" th:text="${room.price} + 'VND/tháng'"> </h5>
@@ -87,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7 col-lg-7 section-md-t3">
+                    <div class="col-md-6 col-lg-6 section-md-t3">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="title-box-d">
@@ -114,7 +112,7 @@
                 </div>
                 <div class="row">
 
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-5">
                         <div class="property-agent">
                             <h4 class="title-agent" th:utext="${room.user.name}"></h4>
 
@@ -147,11 +145,13 @@
                 <h2 class="title-a">Bài viết tương tự</h2>
             </div>
             <div class="list-room row">
+                <p th:if="${room.images.size == 0}" >Hiện không có bài viết</p>
                 <th:block  th:each="room : ${list}">
                     <div class="col-md-4 room" id="room">
                         <div class="card-box-a card-shadow">
                             <div class="img-box-a">
-                                <img th:src="@{${room.images[0].link}}" alt="" class="img-a img-fluid">
+                                <img th:if="${room.images.size == 0}" src="/images/noimage.png"  class="img-a img-fluid">
+                                <img th:if="${room.images.size != 0}" th:src="${room.images[0].link}" alt="" class="img-a img-fluid">
                             </div>
                             <div class="card-overlay">
                                 <div class="card-overlay-a-content">

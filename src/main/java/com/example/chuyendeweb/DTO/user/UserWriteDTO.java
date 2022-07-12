@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserWriteDTO {
     private String name ;
     private String phone;
     private String email;
@@ -27,7 +27,7 @@ public class UserDTO {
         user.getRoles().add(new Role(1l,"user"));
         return user;
     }
-    public static UserDTO transtoDTO(User user){
-        return new UserDTO(user.getName(), user.getPhone(), user.getEmail(),user.getPassword());
+    public static UserWriteDTO transtoDTO(User user){
+        return new UserWriteDTO(user.getName(), user.getPhone(), user.getEmail(),user.getPassword());
     }
 }

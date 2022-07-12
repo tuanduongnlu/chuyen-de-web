@@ -30,6 +30,9 @@ public class User implements Serializable {
     String email;
     Date create_date;
     boolean state;
+    @Column(name = "zalo", unique = true, length = 10)
+    String zalo;
+    String facebook;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

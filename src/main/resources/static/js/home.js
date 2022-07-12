@@ -32,7 +32,7 @@ function addRoom(e){
                 " <div class=\"col-md-4 room\" id='room'>\n" +
                 "                        <div class=\"card-box-a card-shadow\">\n" +
                 "                            <div class=\"img-box-a\">\n" +
-                "                            <img  src=\"images/noimage.png\"  class=\"img-a img-fluid\">" +
+                "                            <img  src=\"/images/noimage.png\"  class=\"img-a img-fluid\">" +
                 "                            </div>\n" +
                 "                            <div class=\"card-overlay\">\n" +
                 "                                <div class=\"card-overlay-a-content\">\n" +

@@ -32,7 +32,7 @@ public class RentPostService {
     }
 
     public RentPostReadDTO getById(int id) {
-        RentPostReadDTO readDTO = RentPostReadDTO.transtoDTO(repository.getById(id));
+        RentPostReadDTO readDTO = RentPostReadDTO.transtoDTO(repository.findById(id));
         return readDTO ;
     }
     public RentPost findById(int id ){

@@ -35,7 +35,7 @@ public class UserController {
     public String create(@RequestBody User user) throws CustomException {
         if(service.checkPhoneExist(user.getPhone()))
             throw  new CustomException("so dien thoai da ton tai", HttpStatus.BAD_REQUEST);
-        service.saveOrUpdate(user);
+        service.save(user);
         return "tao thanh cong";
     }
 
@@ -44,7 +44,7 @@ public class UserController {
     public String update(@RequestBody User user) throws CustomException{
         if(service.checkPhoneExist(user.getPhone()))
             throw  new CustomException("so dien thoai da ton tai", HttpStatus.BAD_REQUEST);
-        service.saveOrUpdate(user);
+        service.update(user);
         return "update thanh cong";
     }
 

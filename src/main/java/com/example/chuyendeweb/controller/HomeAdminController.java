@@ -1,6 +1,5 @@
 package com.example.chuyendeweb.controller;
 
-import com.example.chuyendeweb.DTO.user.UserDTO;
 import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.service.RentPostService;
 import com.example.chuyendeweb.service.RoomTypeService;
