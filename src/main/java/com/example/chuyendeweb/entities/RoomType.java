@@ -23,5 +23,8 @@ public class RoomType implements Serializable {
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
     @JsonBackReference
     Collection<RentPost> rentPosts;
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    @JsonBackReference
+    Collection<FindPost> findPosts ;
 
 }
