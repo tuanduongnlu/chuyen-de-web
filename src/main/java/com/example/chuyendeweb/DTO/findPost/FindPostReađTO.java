@@ -5,10 +5,12 @@ import com.example.chuyendeweb.DTO.RoomTypeDTO;
 import com.example.chuyendeweb.DTO.user.UserWriteDTO;
 import com.example.chuyendeweb.entities.Comment;
 import com.example.chuyendeweb.entities.FindPost;
+import com.example.chuyendeweb.entities.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,5 +43,26 @@ public class FindPostReađTO {
         }
         fP.setCommentDTOList(commentDTOS);
         return  fP;
+    }
+    public  static FindPost trantToFindPost(FindPostReađTO findPostReađTO){
+    FindPost findPost = new FindPost();
+    findPost.setId(findPostReađTO.getId());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            findPost.setTimePost(formatter.parse(findPostReađTO.getTimePost()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        RoomType roomType = RoomTypeDTO.trantToEntity(findPostReađTO.getRoomType());
+        findPost.setRoomType(roomType);
+        findPost.setTitle(findPostReađTO.getTitle());
+        findPost.setDetail(findPostReađTO.getDetail());
+        List<Comment> comment = new ArrayList<>();
+        for (int i = 0; i < findPostReađTO.getCommentDTOList().size(); i++) {
+            comment.add(CommentDTO.trantToEntity(findPostReađTO.getCommentDTOList().get(i)));
+        }
+        findPost.setComments(comment);
+        findPost.setUser(findPostReađTO.getUser().transUser());
+        return findPost;
     }
 }

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @Data
@@ -24,5 +25,21 @@ public class CommentDTO {
         commentDTO.setComment(comment.getComment());
         commentDTO.setUser(UserWriteDTO.transtoDTO(comment.getUser()));
         return commentDTO;
+    }
+    public static  Comment trantToEntity(CommentDTO commentDTO){
+        Comment comment = new Comment();
+        comment.setId(commentDTO.getId());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            comment.setTimePost(formatter.parse(commentDTO.getTimePost()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        comment.setComment(commentDTO.getComment());
+        comment.setUser(commentDTO.getUser().transUser());
+        return  comment;
+
     }
 }

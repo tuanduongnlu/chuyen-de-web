@@ -14,4 +14,10 @@ public class RoomTypeDTO {
     public static RoomTypeDTO trantoDTO(RoomType roomType) {
         return new RoomTypeDTO(roomType.getId(),roomType.getName());
     }
+    public static  RoomType trantToEntity (RoomTypeDTO roomTypeDTO){
+        RoomType roomType = new RoomType();
+        roomType.setId(roomTypeDTO.getId());
+        roomType.setName(roomTypeDTO.getName());
+        return roomType;
+    }
 }
