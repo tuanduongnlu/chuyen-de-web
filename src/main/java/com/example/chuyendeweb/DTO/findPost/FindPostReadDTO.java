@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FindPostReađTO {
+public class FindPostReadDTO {
     int id ;
     String timePost;
     RoomTypeDTO roomType;
@@ -26,8 +26,8 @@ public class FindPostReađTO {
     String detail;
     List<CommentDTO> commentDTOList;
     UserWriteDTO user ;
-    public static FindPostReađTO trantoDTO(FindPost findPost){
-        FindPostReađTO fP = new FindPostReađTO();
+    public static FindPostReadDTO trantoDTO(FindPost findPost){
+        FindPostReadDTO fP = new FindPostReadDTO();
         fP.setId(findPost.getId());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String strDate = formatter.format(findPost.getTimePost());
@@ -44,25 +44,5 @@ public class FindPostReađTO {
         fP.setCommentDTOList(commentDTOS);
         return  fP;
     }
-    public  static FindPost trantToFindPost(FindPostReađTO findPostReađTO){
-    FindPost findPost = new FindPost();
-    findPost.setId(findPostReađTO.getId());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            findPost.setTimePost(formatter.parse(findPostReađTO.getTimePost()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        RoomType roomType = RoomTypeDTO.trantToEntity(findPostReađTO.getRoomType());
-        findPost.setRoomType(roomType);
-        findPost.setTitle(findPostReađTO.getTitle());
-        findPost.setDetail(findPostReađTO.getDetail());
-        List<Comment> comment = new ArrayList<>();
-        for (int i = 0; i < findPostReađTO.getCommentDTOList().size(); i++) {
-            comment.add(CommentDTO.trantToEntity(findPostReađTO.getCommentDTOList().get(i)));
-        }
-        findPost.setComments(comment);
-        findPost.setUser(findPostReađTO.getUser().transUser());
-        return findPost;
-    }
+
 }

@@ -11,7 +11,7 @@
             <h2 class="title">Đăng tìm trọ</h2>
         </div>
         <div class="card-body">
-            <form th:action="@{/findPost}"  method="POST" enctype="multipart/form-data">
+            <form th:action="@{/postFindRoom}"  method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <h2>Thông tin mô tả</h2>
                 </div>
@@ -45,36 +45,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="name">Giá cho thuê</div>
-                    <div class="value">
-                        <input class="input--style-6" type="number" name="price">
-                        <div class="label--desc">Nhập đầy đủ số ,ví dụ 1 triệu thì nhập : 1000000</div>
-                    </div>
 
-                </div>
-                <div class="form-row">
-                    <div class="name">Diện tích</div>
-                    <div class="value">
-                        <input class="input--style-6" type="number" name="acreage">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="name">Đối tượng cho thuê</div>
-                    <div class="value">
-                        <div class="input-group">
-                            <div class="col-md-6 mb-2">
-                                <div class="form-group mt-3">
-                                    <select class="form-control form-select form-control-a " name="sex">
-                                        <option value="Tất cả">Tất cả</option>
-                                        <option value="Nam">Nam</option>
-                                        <option value="Nữ">Nữ</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="">
                     <button class="btn1 btn1--radius-2 btn1--blue-2" type="submit">Gửi bài đăng</button>
                 </div>
