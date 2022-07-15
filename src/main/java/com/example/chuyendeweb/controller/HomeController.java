@@ -1,5 +1,6 @@
 package com.example.chuyendeweb.controller;
 
+import com.example.chuyendeweb.DTO.findPost.FindPostReadDTO;
 import com.example.chuyendeweb.DTO.rentPost.ListRentPost;
 import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
 import com.example.chuyendeweb.DTO.user.UserReadDTO;
@@ -33,6 +34,8 @@ public class HomeController {
     RoomTypeService roomTypeService;
     @Autowired
     RentPostService rentPostService;
+    @Autowired
+    SearcherPostService searcherPostService;
     @Autowired
     BCryptPasswordEncoder BCryptPasswordEncoder;
     @Value("${numberInPage}")
@@ -131,7 +134,10 @@ public class HomeController {
     public String management(Model model) {
         String phone = SecurityContextHolder.getContext().getAuthentication().getName();
         List<RentPostReadDTO> list = rentPostService.findByUser(userService.findByPhone(phone));
+
+        List<FindPostReadDTO> listPost = searcherPostService.findByUser(userService.findByPhone(phone));
         model.addAttribute("list", list);
+        model.addAttribute("listPost", listPost);
         return "postManagement";
     }
     @GetMapping("/detail-account")
