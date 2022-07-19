@@ -18,9 +18,10 @@ public class UserReadDTO {
     private String zalo;
     private String facebook;
     private String date;
+    private boolean state;
     public static UserReadDTO transtoDTO(User user){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return new UserReadDTO(user.getId(),user.getName(), user.getPhone(), user.getEmail(),
-                user.getZalo(), user.getFacebook(),formatter.format(user.getCreate_date()));
+                user.getZalo(), user.getFacebook(),formatter.format(user.getCreate_date()), user.isState());
     }
 }

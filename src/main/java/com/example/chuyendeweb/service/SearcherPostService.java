@@ -2,9 +2,7 @@ package com.example.chuyendeweb.service;
 
 
 import com.example.chuyendeweb.DTO.findPost.FindPostReadDTO;
-import com.example.chuyendeweb.DTO.rentPost.RentPostReadDTO;
 import com.example.chuyendeweb.entities.FindPost;
-import com.example.chuyendeweb.entities.RentPost;
 import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.repository.FindPostRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +17,29 @@ public class SearcherPostService {
 
     private final FindPostRepository findPostRepository;
 
+    public void deleteById(int id) {
+        findPostRepository.deleteById(id);
+    }
 
-    public void saveOrUpdate(FindPost findPost){
+    public List<FindPost> getAllFindPost() {
+        return findPostRepository.findAll();
+    }
+
+    public FindPost findById(int id){
+        return findPostRepository.findById(id);
+    }
+
+    public void saveOrUpdate(FindPost findPost) {
         findPostRepository.save(findPost);
     }
 
-    public List<FindPostReadDTO> findByUser(User user){
+    public List<FindPostReadDTO> findByUser(User user) {
         List<FindPostReadDTO> findPostReadDTOS = new ArrayList<>();
-        for (FindPost e:findPostRepository.findAllByUser(user)) {
+        for (FindPost e : findPostRepository.findAllByUser(user)) {
             findPostReadDTOS.add(FindPostReadDTO.trantoDTO(e));
         }
         return findPostReadDTOS;
     }
-
-
 
 
 }

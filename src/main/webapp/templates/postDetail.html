@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="header :: head">
+</head>
+<body>
+<div th:insert="header :: header">
+</div>
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h5 class="title-single" th:utext="${findPost.title}"></h5>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<section class="property-single nav-arrow-b">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div id="property-single-carousel" class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <h5 class="title-single" th:utext="${findPost.detail}"></h5>
+                    </div>
+                </div>
+                <div class="property-single-carousel-pagination carousel-pagination"></div>
+            </div>
+        </div>
+        <div class="property-summary">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="title-box-d section-t4">
+                        <h3 class="title-d">Thông tin</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-list">
+                <ul class="list">
+
+                    <li class="d-flex justify-content-between">
+                        <strong>Địa chỉ:</strong>
+                        <span th:utext="${findPost.roomType.name}"></span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <strong>Người đăng:</strong>
+                        <span th:utext="${findPost.user.name}"></span>
+                    </li>
+
+                    <li class="d-flex justify-content-between">
+                        <strong>Ngày đăng:</strong>
+                        <span th:utext="${findPost.timePost.toString}"></span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="property-summary">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="title-box-d section-t4">
+                        <h3 class="title-d">Comemnt</h3>
+                    </div>
+                </div>
+            </div>
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-5 col-md-6 col-12 pb-4">
+                            <h1>Comments</h1>
+                            <th:block th:each="comment : ${findPost.comments}">
+                                <div class="comment mt-4 text-justify float-left">
+                                    <h4 th:utext="${comment.user.name}"></h4>
+                                    <span th:utext="${comment.timePost}"></span>
+                                    <br>
+                                    <p th:utext="${comment.comment}"></p>
+                                </div>
+                            </th:block>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+<!--            <div class="summary-list">-->
+<!--                <ul class="list">-->
+<!--                    <th:block th:each="comment : ${findPost.comments}">-->
+<!--                        <li class="d-flex justify-content-between">-->
+<!--                            <strong th:utext="${comment.user.name}"></strong>-->
+<!--                            <span th:utext="${comment.comment}"></span>-->
+<!--                        </li>-->
+<!--                    </th:block>-->
+<!--                </ul>-->
+<!--            </div>-->
+        </div>
+
+
+    </div>
+</section>
+<div th:insert="footer :: footer"></div>
+</body>
+</html>

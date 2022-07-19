@@ -1,5 +1,11 @@
 package com.example.chuyendeweb;
 
+import com.example.chuyendeweb.entities.Role;
+import com.example.chuyendeweb.entities.RoomType;
+import com.example.chuyendeweb.repository.RoleRepository;
+import com.example.chuyendeweb.repository.RoomTypeRepository;
+import com.example.chuyendeweb.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

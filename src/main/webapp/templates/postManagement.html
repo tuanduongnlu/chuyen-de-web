@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:insert="header :: head">
 </head>
 <body>
@@ -47,10 +47,12 @@
                             <button type="button" class="btn btn-danger" th:onclick="'deleteRoom('+${room.id}+')'">Xóa
                             </button>
                             <a class="btn btn-success" th:href="@{'/posts/' + ${room.id}}">Chi tiết</a>
-                            <button th:if="${room.status}=='còn'" type="button" class="btn btn-primary" th:onclick="'updateStatus('+${room.id}+')'">Đã cho
+                            <button th:if="${room.status}=='còn'" type="button" class="btn btn-primary"
+                                    th:onclick="'updateStatus('+${room.id}+')'">Đã cho
                                 thuê
                             </button>
-                            <button th:if="${room.status}!='còn'" type="button" class="btn btn-primary" th:onclick="'updateStatus('+${room.id}+')'">Cho thuê
+                            <button th:if="${room.status}!='còn'" type="button" class="btn btn-primary"
+                                    th:onclick="'updateStatus('+${room.id}+')'">Cho thuê
                             </button>
                         </td>
                     </tr>
@@ -80,10 +82,10 @@
                         <td th:utext="${post.detail}"></td>
                         <td th:utext="${post.timePost}"></td>
                         <td>
-                            <button type="button" class="btn btn-danger" >Xóa
+                            <button type="button" class="btn btn-danger"
+                                    th:onclick="'deletePostFindRoom('+${post.id}+')'">Xóa
                             </button>
-
-
+                            <a class="btn btn-success" th:href="@{'/postFindRoom/' + ${post.id}}">Chi tiết</a>
                         </td>
                     </tr>
                     </tbody>
@@ -110,6 +112,20 @@
     function updateStatus(id){
         window.location.href = "http://localhost:8080/status/" + id ;
     }
+    function deletePostFindRoom(id) {
+        fetch('http://localhost:8080/postFindRoom/delete/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(res =>res.text())
+            .then(res =>{
+                $('.'+ res).remove();
+            })
+    }
+
 </script>
 </body>
 </html>

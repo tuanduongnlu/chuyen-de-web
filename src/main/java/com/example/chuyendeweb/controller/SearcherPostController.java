@@ -1,18 +1,22 @@
 package com.example.chuyendeweb.controller;
 
+import com.example.chuyendeweb.DTO.CommentDTO;
 import com.example.chuyendeweb.DTO.findPost.FindPostWriteDTO;
-import com.example.chuyendeweb.DTO.rentPost.RentPostWriteDTO;
+import com.example.chuyendeweb.entities.Comment;
 import com.example.chuyendeweb.entities.FindPost;
+import com.example.chuyendeweb.service.CommentService;
 import com.example.chuyendeweb.service.RoomTypeService;
 import com.example.chuyendeweb.service.SearcherPostService;
 import com.example.chuyendeweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class SearcherPostController {
@@ -23,14 +27,32 @@ public class SearcherPostController {
     RoomTypeService roomTypeService;
 
     @Autowired
+    CommentService commentService;
+
+    @Autowired
     UserService userService;
 
     @GetMapping(value = "/findRoom")
     public String getPostPage(Model model) {
-//        RentPostWriteDTO rentPost = new RentPostWriteDTO();
-//        model.addAttribute("rentPost", rentPost);
-        return "find-room";
+        List<FindPost> listAll = searcherPostService.getAllFindPost();
+        model.addAttribute("listAllFindPost", listAll);
+        return "findRoom";
 
+    }
+    @GetMapping(value = "/postFindRoom/{id}")
+    public String getPostDetail(@PathVariable("id")int id, Model model){
+        FindPost findPost = searcherPostService.findById(id);
+        List<Comment> comments = findPost.getComments();
+        model.addAttribute("findPost", findPost);
+        model.addAttribute("comments", comments);
+        return "postDetail";
+    }
+
+    @DeleteMapping(value = "/postFindRoom/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<String> delete(@PathVariable("id") int id) {
+        searcherPostService.deleteById(id);
+        return new ResponseEntity(id, HttpStatus.OK);
     }
 
     @PostMapping("/postFindRoom")
@@ -45,6 +67,23 @@ public class SearcherPostController {
         findPost.setUser(userService.findByPhone(phone));
         searcherPostService.saveOrUpdate(findPost);
         return "redirect:/home";
+    }
+
+    @PostMapping("/postFindRoom/comment/{id}")
+    public String UpdateComemnt(@PathVariable("id")int id, @RequestParam("commet")String subComment){
+        Comment comment = commentService.findById(id);
+        comment.setComment(subComment);
+        commentService.saveOrUpdate(comment);
+        return "postDetail";
+    }
+    @PostMapping("/postFindRoom/{id}/comment")
+    public String saveComemnt(@PathVariable("id")int id, @RequestParam("commet")String subComment){
+        FindPost findPost = searcherPostService.findById(id);
+
+        List<Comment> comments = findPost.getComments();
+
+
+        return "postDetail";
     }
 
 
