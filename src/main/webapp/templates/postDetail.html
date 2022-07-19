@@ -82,7 +82,21 @@
                             </th:block>
 
 
+                            <div class="card-body">
+                                <form th:action="@{'/postFindRoom/'+${findPost.id}+'/comment'}"  method="POST" enctype="multipart/form-data">
+                                    <div class="value">
+                                        <div class="input-group">
+                                            <input class="input--style-6" name="comment">
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <a th:href="@{'/postFindRoom/' + ${findPost.id}}">
+                                            <button class="btn1 btn1--radius-2 btn1--blue-2" type="submit">comment</button>
+                                        </a>
 
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

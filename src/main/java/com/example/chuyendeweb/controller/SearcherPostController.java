@@ -70,20 +70,27 @@ public class SearcherPostController {
     }
 
     @PostMapping("/postFindRoom/comment/{id}")
-    public String UpdateComemnt(@PathVariable("id")int id, @RequestParam("commet")String subComment){
+    public String UpdateComemnt(@PathVariable("id")int id, @RequestParam("comment")String subComment){
         Comment comment = commentService.findById(id);
         comment.setComment(subComment);
         commentService.saveOrUpdate(comment);
         return "postDetail";
     }
     @PostMapping("/postFindRoom/{id}/comment")
-    public String saveComemnt(@PathVariable("id")int id, @RequestParam("commet")String subComment){
+    public String saveComemnt(@PathVariable("id")int id, @RequestParam("comment")String subComment){
         FindPost findPost = searcherPostService.findById(id);
 
         List<Comment> comments = findPost.getComments();
+        Comment comment = new Comment();
+        comment.setComment(subComment);
+        comment.setFind_post(findPost);
+        final String phone = SecurityContextHolder.getContext().getAuthentication().getName();
 
-
-        return "postDetail";
+        comment.setUser(userService.findByPhone(phone));
+        comments.add(comment);
+        findPost.setComments(comments);
+        searcherPostService.saveOrUpdate(findPost);
+        return "redirect:/postFindRoom/"+id;
     }
 
 

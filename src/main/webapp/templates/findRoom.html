@@ -5,9 +5,69 @@
 <body>
 <div th:insert="header :: header">
 </div>
-<section class="section-news section-t8">
-    <h1>hihihihihihihi</h1>
-</section>
+<th:block th:each="findPost : ${listAllFindPost}">
+    <section class="intro-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="title-single-box">
+                        <h5 class="title-single" th:utext="${findPost.title}"></h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Intro Single-->
+
+    <section class="property-single nav-arrow-b">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div id="property-single-carousel" class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <h5 class="title-single" th:utext="${findPost.detail}"></h5>
+                        </div>
+                    </div>
+                    <div class="property-single-carousel-pagination carousel-pagination"></div>
+                </div>
+            </div>
+            <div class="property-summary">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="title-box-d section-t4">
+                            <h3 class="title-d">Thông tin</h3>
+                            <a class="btn btn-success" th:href="@{'/postFindRoom/' + ${findPost.id}}">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-list">
+                    <ul class="list">
+
+                        <li class="d-flex justify-content-between">
+                            <strong>Địa chỉ:</strong>
+                            <span th:utext="${findPost.roomType.name}"></span>
+                        </li>
+                        <li class="d-flex justify-content-between">
+                            <strong>Người đăng:</strong>
+                            <span th:utext="${findPost.user.name}"></span>
+                        </li>
+
+                        <li class="d-flex justify-content-between">
+                            <strong>Ngày đăng:</strong>
+                            <span th:utext="${findPost.timePost.toString}"></span>
+                        </li>
+                        <li class="d-flex justify-content-between">
+                            <strong>comment:</strong>
+                            <span th:utext="${findPost.comments.size}"></span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+
 
 
 <div th:insert="footer :: footer"></div>

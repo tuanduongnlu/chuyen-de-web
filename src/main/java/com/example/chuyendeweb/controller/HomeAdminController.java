@@ -27,7 +27,7 @@ public class HomeAdminController {
     @Autowired
     RoomTypeService roomTypeService;
 
-    @GetMapping("")
+    @GetMapping("/")
     public String getAll(Model model){
         return "admin/homeAdmin";
     }
