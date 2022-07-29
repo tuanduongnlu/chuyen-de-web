@@ -44,7 +44,7 @@
                         <td th:utext="${room.status}"></td>
                         <td th:utext="${room.timePost}"></td>
                         <td>
-                            <button type="button" class="btn btn-danger" th:onclick="'deleteRoom('+${room.id}+')'">Xóa
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#check"  th:onclick="'getRoomPopup('+${room.id}+')'">Xóa
                             </button>
                             <a class="btn btn-success" th:href="@{'/posts/' + ${room.id}}">Chi tiết</a>
                             <button th:if="${room.status}=='còn'" type="button" class="btn btn-primary"
@@ -82,8 +82,9 @@
                         <td th:utext="${post.detail}"></td>
                         <td th:utext="${post.timePost}"></td>
                         <td>
-                            <button type="button" class="btn btn-danger"
-                                    th:onclick="'deletePostFindRoom('+${post.id}+')'">Xóa
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#check"
+                                    th:onclick="'getPopup('+${post.id}+')'">
+                                Xóa
                             </button>
                             <a class="btn btn-success" th:href="@{'/postFindRoom/' + ${post.id}}">Chi tiết</a>
                         </td>
@@ -92,10 +93,34 @@
                 </table>
             </div>
         </div>
+        <div class="modal fade" id="check" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa :</h5>
+                    </div>
+                    <div class="modal-body model-manager">
+                        <div class="button-popup">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <div th:insert="footer :: footer"></div>
 <script>
+    function getPopup(idPost) {
+        $(".button-popup").remove();
+        $(".model-manager").append("<div class=\"button-popup\"> <button type=\"button\" onclick='deletePostFindRoom("+ idPost +")'\" class=\"btn btn-primary\" >Đồng ý</button>\n" +
+            "                        <button type=\"button\" class=\"close btn btn-primary\" data-dismiss=\"modal\" aria-label=\"Close\">Hủy</button> </div>")
+    }
+    function  getRoomPopup (idRoom){
+        $(".button-popup").remove();
+        $(".model-manager").append("<div class=\"button-popup\"> <button type=\"button\" onclick='deleteRoom("+ idRoom +")'\" class=\"btn btn-primary\" >Đồng ý</button>\n" +
+            "                        <button type=\"button\" class=\"close btn btn-primary\" data-dismiss=\"modal\" aria-label=\"Close\">Hủy</button> </div>")
+    }
     function deleteRoom(id) {
         fetch('http://localhost:8080/delete/' + id, {
             method: 'DELETE',
@@ -104,14 +129,17 @@
                 'Accept': 'application/json'
             }
         })
-            .then(res =>res.text())
-            .then(res =>{
-                $('.'+ res).remove();
+            .then(res => res.text())
+            .then(res => {
+                $('.' + res).remove();
+                $('.modal').modal('hide');
             })
     }
-    function updateStatus(id){
-        window.location.href = "http://localhost:8080/status/" + id ;
+
+    function updateStatus(id) {
+        window.location.href = "http://localhost:8080/status/" + id;
     }
+
     function deletePostFindRoom(id) {
         fetch('http://localhost:8080/postFindRoom/delete/' + id, {
             method: 'DELETE',
@@ -120,9 +148,10 @@
                 'Accept': 'application/json'
             }
         })
-            .then(res =>res.text())
-            .then(res =>{
-                $('.'+ res).remove();
+            .then(res => res.text())
+            .then(res => {
+                $('.' + res).remove();
+                $('.modal').modal('hide');
             })
     }
 
