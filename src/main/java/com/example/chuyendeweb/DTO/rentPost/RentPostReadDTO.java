@@ -3,6 +3,7 @@ package com.example.chuyendeweb.DTO.rentPost;
 import com.example.chuyendeweb.DTO.ImageDTO;
 import com.example.chuyendeweb.DTO.LocationDTO;
 import com.example.chuyendeweb.DTO.RoomTypeDTO;
+import com.example.chuyendeweb.DTO.user.UserReadDTO;
 import com.example.chuyendeweb.DTO.user.UserWriteDTO;
 import com.example.chuyendeweb.entities.RentPost;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class RentPostReadDTO {
     LocationDTO location;
     String sex ;
     String status;
-    UserWriteDTO user ;
+    UserReadDTO user ;
 public static RentPostReadDTO transtoDTO(RentPost rentPost) {
   RentPostReadDTO readDTO = new RentPostReadDTO();
   readDTO.setId(rentPost.getId());
@@ -48,7 +49,7 @@ public static RentPostReadDTO transtoDTO(RentPost rentPost) {
   readDTO.setLocation(LocationDTO.trantoDTO(rentPost.getLocation()));
   readDTO.setSex(rentPost.getSex());
   readDTO.setStatus(rentPost.getStatus());
-  readDTO.setUser(UserWriteDTO.transtoDTO(rentPost.getUser()));
+  readDTO.setUser(UserReadDTO.transtoDTO(rentPost.getUser()));
   return readDTO;
 }
 }

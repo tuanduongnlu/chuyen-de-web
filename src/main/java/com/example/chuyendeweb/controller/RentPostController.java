@@ -249,6 +249,9 @@ public class RentPostController {
                        @RequestParam("price") int price, @RequestParam("acreage") double acreage,
                        @RequestParam("distric_id") int distric_id, @RequestParam("ward_id") int ward_id,
                        @RequestParam("street") String street, @RequestParam("sex") String sex, HttpServletRequest req) throws Exception {
+        if(distric_id==0 || ward_id==0) {
+            return "redirect:/post";
+        }
         RentPostWriteDTO writeDTO = new RentPostWriteDTO(roomType, images, title, detail, price, acreage, distric_id, ward_id, street, sex);
         RentPost rentPost = RentPostWriteDTO.trantToRentpost(writeDTO);
         rentPost.setRoomType(roomTypeService.getById(writeDTO.getRoomType()));
@@ -258,9 +261,11 @@ public class RentPostController {
         rentPost.setUser(userService.findByPhone(phone));
         List<Image> imagesRentPost = new ArrayList<>();
         List<String> nameImage = fileService.upload(images,req);
-        for (String name : nameImage) {
+        if(nameImage!=null){
+            for (String name : nameImage) {
                 Image image = new Image(0, "/templates/images/" + name, rentPost);
                 imagesRentPost.add(image);
+            }
         }
         rentPost.setImages(imagesRentPost);
         RentPostService.saveOrUpdate(rentPost);

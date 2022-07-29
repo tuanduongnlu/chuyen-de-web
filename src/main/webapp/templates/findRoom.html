@@ -2,74 +2,83 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="header :: head">
 </head>
+<link href="/css/findroom.css" th:href="@{/css/findroom.css}" rel="stylesheet">
 <body>
 <div th:insert="header :: header">
 </div>
-<th:block th:each="findPost : ${listAllFindPost}">
-    <section class="intro-single">
+<section class="section-news section-t8">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 col-lg-8">
-                    <div class="title-single-box">
-                        <h5 class="title-single" th:utext="${findPost.title}"></h5>
-
-                    </div>
+                <div class="title-box">
+                    <h2 class="title-a">Danh sách tin đăng</h2>
                 </div>
             </div>
-        </div>
-    </section><!-- End Intro Single-->
+            <th:block th:each="findPost : ${listAllFindPost}">
+                <div class="container mt-6 mb-6">
+                    <div class=" justify-content-center row">
+                        <div class="col-md-12">
+                            <div class="row p-2 bg-white border rounded mt-2">
+                                <div class="col-md-8 mt-1">
+                                    <h4 th:utext="${findPost.title}"></h4>
+                                    <div class="d-flex flex-row">
+                                        <span th:utext="${findPost.detail}"></span>
+                                    </div>
 
-    <section class="property-single nav-arrow-b">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div id="property-single-carousel" class="swiper mySwiper">
-                        <div class="swiper-wrapper">
-                            <h5 class="title-single" th:utext="${findPost.detail}"></h5>
+                                </div>
+                                <div class="align-items-center align-content-center col-md-4 border-left mt-1">
+                                    <ul class="list">
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Địa chỉ:</strong>
+                                            <span th:utext="${findPost.roomType.name}"></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Người đăng:</strong>
+                                            <span th:utext="${findPost.user.name}"></span>
+                                        </li>
+
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Ngày đăng:</strong>
+                                            <span th:utext="${findPost.timePost.toString}"></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between">
+                                            <strong>comment:</strong>
+                                            <span th:utext="${findPost.comments.size}"></span>
+                                        </li>
+                                    </ul>
+                                    <div class="d-flex flex-column mt-4">
+                                        <a th:href="@{'/postFindRoom/' + ${findPost.id}}" style="margin-left: 35px;" class="btn btn-primary btn-sm" type="button">Chi tiết</a></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="property-single-carousel-pagination carousel-pagination"></div>
                 </div>
-            </div>
-            <div class="property-summary">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="title-box-d section-t4">
-                            <h3 class="title-d">Thông tin</h3>
-                            <a class="btn btn-success" th:href="@{'/postFindRoom/' + ${findPost.id}}">Chi tiết</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="summary-list">
-                    <ul class="list">
-
-                        <li class="d-flex justify-content-between">
-                            <strong>Địa chỉ:</strong>
-                            <span th:utext="${findPost.roomType.name}"></span>
-                        </li>
-                        <li class="d-flex justify-content-between">
-                            <strong>Người đăng:</strong>
-                            <span th:utext="${findPost.user.name}"></span>
-                        </li>
-
-                        <li class="d-flex justify-content-between">
-                            <strong>Ngày đăng:</strong>
-                            <span th:utext="${findPost.timePost.toString}"></span>
-                        </li>
-                        <li class="d-flex justify-content-between">
-                            <strong>comment:</strong>
-                            <span th:utext="${findPost.comments.size}"></span>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
+            </th:block>
         </div>
-    </section>
-</th:block>
+    <div class="row">
+        <div class="col-sm-12">
+            <nav class="pagination-a" id="pagination">
+                <ul class="pagination justify-content-end">
+                </ul>
+            </nav>
+        </div>
+    </div>
 
-
+</section>
 
 <div th:insert="footer :: footer"></div>
+<script>
+    $(".find-room").addClass("active")
+    $(function() {
+        $("#pagination").pagination({
+            pages: 1,
+            cssStyle: 'light-theme',
+            displayedPages: 3,
+            onPageClick: function (page,evt){
+
+            }
+        });
+
+    });
+</script>
 </body>
 </html>

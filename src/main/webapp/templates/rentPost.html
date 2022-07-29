@@ -22,7 +22,7 @@
                         <div class="form-group mt-3">
                             <label class="pb-2">Quận</label>
                             <select class="form-control form-select form-control-a "  id="distric-post" name="distric_id"
-                                    onchange="getwardPost()">
+                                    onchange="getwardPost()" required>
                                 <option value="0">Tất cả</option>
                             </select>
                         </div>
@@ -30,8 +30,8 @@
                     <div class="col-md-6 mb-2">
                         <div class="form-group mt-3">
                             <label class="pb-2">Phường</label>
-                            <select class="form-control form-select form-control-a " id="wards-post" name="ward_id">
-                                <option class="ward-post" value="0"></option>
+                            <select class="form-control form-select form-control-a " id="wards-post" name="ward_id" required>
+                                <option class="ward-post" value="0" ></option>
                             </select>
                         </div>
                     </div>
@@ -75,7 +75,12 @@
             <div class="form-row">
                 <div class="name">Giá cho thuê</div>
                 <div class="value">
-                    <input class="input--style-6" type="number" name="price">
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="price" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">VND</span>
+                        </div>
+                    </div>
                     <div class="label--desc">Nhập đầy đủ số ,ví dụ 1 triệu thì nhập : 1000000</div>
                 </div>
 
@@ -83,7 +88,12 @@
             <div class="form-row">
                 <div class="name">Diện tích</div>
                 <div class="value">
-                    <input class="input--style-6" type="number" name="acreage">
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="acreage" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">m</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="form-row">

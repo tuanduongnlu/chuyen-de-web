@@ -185,4 +185,5 @@ public class HomeController {
         model.addAttribute("success","true");
         return "changePassword";
     }
+
 }

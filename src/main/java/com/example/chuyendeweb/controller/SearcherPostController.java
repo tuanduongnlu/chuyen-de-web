@@ -66,7 +66,7 @@ public class SearcherPostController {
         final String phone = SecurityContextHolder.getContext().getAuthentication().getName();
         findPost.setUser(userService.findByPhone(phone));
         searcherPostService.saveOrUpdate(findPost);
-        return "redirect:/home";
+        return "redirect:/findRoom";
     }
 
     @PostMapping("/postFindRoom/comment/{id}")
@@ -85,7 +85,6 @@ public class SearcherPostController {
         comment.setComment(subComment);
         comment.setFind_post(findPost);
         final String phone = SecurityContextHolder.getContext().getAuthentication().getName();
-
         comment.setUser(userService.findByPhone(phone));
         comments.add(comment);
         findPost.setComments(comments);

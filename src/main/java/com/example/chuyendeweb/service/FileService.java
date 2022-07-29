@@ -21,7 +21,7 @@ public class FileService {
                 throw new CustomException("Vui lòng chọn file dung lượng nhỏ", HttpStatus.BAD_REQUEST);
             }
             if (file.getSize() == 0 || file == null) {
-                throw new CustomException("Bạn chưa chọn file", HttpStatus.BAD_REQUEST);
+               return  null;
             }
             String uploadRootPath = req.getServletContext().getRealPath("/templates/images");
             File dir = new File(uploadRootPath);
