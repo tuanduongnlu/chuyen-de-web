@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="admin/headerAdmin :: head">
+
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:replace="admin/headerAdmin :: header"></div>
+<section class="section-news section-t8">
+    <div class="container">
+        <div class="tab-content">
+            <div id="home" class="container tab-pane active"><br>
+                <h3>Danh sách bài Tìm trọ</h3>
+                <table style="table-layout: fixed" class="table table-hover ">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Loại trọ</th>
+                        <th>tiêu đề</th>
+                        <th>Tình trạng</th>
+                        <th>Comment</th>
+                        <th>Ngày đăng</th>
+                        <th>Tác vụ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="post, state : ${listPost}" th:class="${post.id}">
+                        <td th:text="${state.count}"></td>
+                        <td th:text="${post.roomType.name}"></td>
+                        <td th:utext="${post.title} "></td>
+                        <td th:utext="${post.detail}"></td>
+                        <td th:utext="${post.comments.size}"></td>
+                        <td th:utext="${post.timePost}"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#check"
+                                    th:onclick="'getPopup('+${post.id}+')'">
+                                Xóa
+                            </button>
+                            <a class="btn btn-success" th:href="@{'/postFindRoom/' + ${post.id}}">Chi tiết</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal fade" id="check" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa :</h5>
+                        </div>
+                        <div class="modal-body model-manager">
+                            <div class="button-popup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:insert="footer :: footer"></div>
+<script>
+    function getPopup(idPost) {
+        $(".button-popup").remove();
+        $(".model-manager").append("<div class=\"button-popup\"> <button type=\"button\" onclick='deletePostFindRoom("+ idPost +")'\" class=\"btn btn-primary\" >Đồng ý</button>\n" +
+            "                        <button type=\"button\" class=\"close btn btn-primary\" data-dismiss=\"modal\" aria-label=\"Close\">Hủy</button> </div>")
+    }
+
+    function deletePostFindRoom(id) {
+        fetch('http://localhost:8080/postFindRoom/delete/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(res => res.text())
+            .then(res => {
+                $('.' + res).remove();
+                $('.modal').modal('hide');
+            })
+    }
+
+
+</script>
+</body>
+</html>

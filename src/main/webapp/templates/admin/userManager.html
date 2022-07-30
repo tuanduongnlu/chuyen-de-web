@@ -15,41 +15,37 @@
             <!-- Tab panes -->
 
                 <div id="home" class="container tab-pane active"><br>
-                    <h3>Danh sách người dùng/h3>
+                    <h3>Danh sách người dùng</h3>
                     <table class="table table-hover ">
                         <thead>
                         <tr>
                             <th>STT</th>
                             <th>Name user</th>
-                            <th>passwork</th>
                             <th>SĐT</th>
                             <th>Email</th>
                             <th>Ngày tạo</th>
                             <th>Zalo</th>
                             <th>FaceBook</th>
+                            <th>trạng thái</th>
                         </tr>
                         </thead>
-<!--                        <tbody>-->
-<!--                        <tr th:each="user, state : ${listUser}" th:class="${user.id}">-->
-<!--&lt;!&ndash;                            <td><a th:href="@{'/posts/' + ${room.id}}" th:text="${state.count}"></a></td>&ndash;&gt;-->
-<!--                            <td th:text="${state.count}"></td>-->
-<!--                            <td th:text="${user.name}"></td>-->
-<!--                            <td th:text="${user.password}"></td>-->
-<!--                            <td th:utext="${user.phone} "></td>-->
-<!--                            <td th:utext="${user.email  }"></td>-->
-<!--                            <td th:utext="${room.timePost}"></td>-->
-<!--                            <td>-->
-<!--                                <button type="button" class="btn btn-danger" th:onclick="'deleteRoom('+${room.id}+')'">Xóa-->
-<!--                                </button>-->
-<!--                                <a class="btn btn-success" th:href="@{'/posts/' + ${room.id}}">Chi tiết</a>-->
-<!--                                <button th:if="${room.status}=='còn'" type="button" class="btn btn-primary" th:onclick="'updateStatus('+${room.id}+')'">Đã cho-->
-<!--                                    thuê-->
-<!--                                </button>-->
-<!--                                <button th:if="${room.status}!='còn'" type="button" class="btn btn-primary" th:onclick="'updateStatus('+${room.id}+')'">Cho thuê-->
-<!--                                </button>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                        </tbody>-->
+                        <tbody>
+                        <tr th:each="user, state : ${listUser}" th:class="${user.id}">
+                            <td th:text="${state.count}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:utext="${user.phone} "></td>
+                            <td th:utext="${user.email }"></td>
+                            <td th:utext="${user.create_date }"></td>
+                            <td th:utext="${user.roles }"></td>
+                            <td th:utext="${user.facebook }"></td>
+                            <td>
+                                <button th:if="${user.state}==true" type="button" class="btn btn-primary" th:onclick="'updateStatusUser('+${user.id}+')'">đã mở
+                                </button>
+                                <button th:if="${user.state}==false" type="button" class="btn btn-primary" th:onclick="'updateStatusUser('+${user.id}+')'">đã khóa
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
         </div>
@@ -70,19 +66,8 @@
                 $('.'+ res).remove();
             })
     }
-    function updateStatus(id){
-        fetch('http://localhost:8080/status/' + id, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then(res =>res.text())
-            .then(res =>{
-                console.log(res);
-            })
-        // window.location.href = "http://localhost:8080/management"
+    function updateStatusUser(id){
+         window.location.href = "http://localhost:8080/admin/users/state/"+id;
     }
 </script>
 </body>

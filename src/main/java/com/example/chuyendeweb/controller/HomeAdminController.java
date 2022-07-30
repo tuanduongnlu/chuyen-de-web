@@ -1,9 +1,12 @@
 package com.example.chuyendeweb.controller;
 
 import com.example.chuyendeweb.DTO.user.UserReadDTO;
+import com.example.chuyendeweb.entities.FindPost;
+import com.example.chuyendeweb.entities.RentPost;
 import com.example.chuyendeweb.entities.User;
 import com.example.chuyendeweb.service.RentPostService;
 import com.example.chuyendeweb.service.RoomTypeService;
+import com.example.chuyendeweb.service.SearcherPostService;
 import com.example.chuyendeweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,10 +28,21 @@ public class HomeAdminController {
     @Autowired
     RentPostService rentPostService;
     @Autowired
-    RoomTypeService roomTypeService;
+    SearcherPostService searcherPostService;
 
     @GetMapping("/")
     public String getAll(Model model){
+        List<FindPost> findPostList = searcherPostService.getAllFindPost();
+        int sumComment=0;
+        for (int i = 0; i < findPostList.size(); i++) {
+            sumComment = sumComment + findPostList.get(i).getComments().size();
+        }
+        model.addAttribute("sumUser", userService.findAll().size());
+        model.addAttribute("sumPost", rentPostService.rentPosts().size());
+        model.addAttribute("sumFindPost", findPostList.size());
+        model.addAttribute("sumComment", sumComment);
+
+
         return "admin/homeAdmin";
     }
     @GetMapping("/users")
@@ -39,18 +53,33 @@ public class HomeAdminController {
 
     }
 
-    @PostMapping("/users/state/{id}")
+    @GetMapping("/users/state/{id}")
     public String updateState(@PathVariable("id")int id){
-        final String phone = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findByPhone(phone);
+        User user = userService.getUserById(id);
          if (user.isState()){
              user.setState(false);
              userService.save(user);
-             return "admin/userManager";
+             return "redirect:/admin/users";
          }
          user.setState(true);
-        userService.save(user);
-         return "admin/userManager";
+         userService.save(user);
+         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/posts")
+    public String getAllPost(Model model){
+        List<RentPost> list = rentPostService.rentPosts();
+        model.addAttribute("list", list);
+        return "admin/postManager";
+
+    }
+
+    @GetMapping("/findPost")
+    public String getAllFindPost(Model model){
+        List<FindPost> list = searcherPostService.getAllFindPost();
+        model.addAttribute("listPost", list);
+        return "admin/searcherPostManager";
+
     }
 
 

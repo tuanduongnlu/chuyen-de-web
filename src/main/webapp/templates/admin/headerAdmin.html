@@ -45,21 +45,21 @@
             <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="homeAdmin">Home</a>
+                        <a class="nav-link active" href="/admin/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="/">Cho thuê</a>
+                        <a class="nav-link " href="users">User</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Chung cư</a>
+                        <a class="nav-link " href="posts">Cho thuê</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Phòng trọ</a>
+                        <a class="nav-link " href="findPost">Tìm trọ</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">Nhà nguyên căn</a>
-                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link " href="#">Nhà nguyên căn</a>-->
+<!--                    </li>-->
                 </ul>
             </div>
 
@@ -68,12 +68,10 @@
                 <div class="dropdown">
                     <button class="dropbtn">Quản lý tài khoảng</button>
                     <div class="dropdown-content">
-                        <a href="#">Thông tin cá nhân</a>
-                        <a href="/management">Quản lý tin đăng</a>
                         <a href="/logout">Thoát</a>
                     </div>
                 </div>
-                <button class="btn-dangbai">Đăng bài</button>
+
             </div>
             <button  th:unless="${#httpServletRequest.remoteUser}" class="btn-login">Đăng nhập</button>
             <button  th:unless="${#httpServletRequest.remoteUser}" class="btn-register">Đăng kí</button>
